@@ -14,7 +14,7 @@
     <script src="js/bootstrap.min.js"></script>	
     <script src="js/myscripts.js"></script>
 	<meta http-equiv="Content-Type" name="viewport" content="width=device-width">
-	<title>Bibliotek Informatika - Administration</title>
+	<title>Bibliotek Informatika</title>
 
 	<link rel="shortcut icon" href="http://www.odontologi.gu.se/kirurgi/img/gu_logga.png">
 </head>
@@ -37,7 +37,7 @@ String sparadRoll = (String) session.getAttribute("sparadRoll");
 
 <% 
 //Tittar om anvÃ¤ndaren redan har en session igÃ¥ng och skickar personen till rÃ¤tt sida beroende pÃ¥ roll.
-if (session.getAttribute("sparadRoll") == "AdministratÃ¶r") {
+if (session.getAttribute("sparadRoll") == "Administratör") {
     response.sendRedirect("administrator.jsp"); // Not logged in, redirect to login page.
 }
 
@@ -45,7 +45,7 @@ if (session.getAttribute("sparadRoll") == "AdministratÃ¶r") {
 %>
 
 <div class="page-header">
-<h1>  <a href="main.jsp"> <span class="glyphicon glyphicon-book"></span> Bibliotek Informatika</a> <small>Administration</small> </h1>
+<h1>  <a href="lantagare.jsp"> <span class="glyphicon glyphicon-book"></span> Bibliotek Informatika</a> <small>Låntagare</small> </h1>
 </button>
 </div>
 	
@@ -65,19 +65,17 @@ if (session.getAttribute("sparadRoll") == "AdministratÃ¶r") {
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li id="katalogiseraKnapp"><a href="#">Katalogisera</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lista <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> Sök<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="listaAlltKnapp"><a href="#">Samtliga verk&nbsp&nbsp<span class="badge">
+            <li id="listaAlltKnapp"><a href="#">Listning av alla verk<span class="badge">
             <%
             GetLiteratureService gts = new GetLiteratureService();
   			int amount = gts.getNumberOfTitles()+1;
             %>
             <%=amount %>
             </span></a></li>
-            <li id="listaEnskildTitelKnapp"><a href="#">Enskilt verk</a></li>
-            <li id="pagaendeLanKnapp"><a href="#">Pågående lån</a></li>
+            <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt verk</a></li>
           </ul>
         </li>
       </ul>
@@ -87,10 +85,11 @@ if (session.getAttribute("sparadRoll") == "AdministratÃ¶r") {
       <p class="navbar-text navbar-right"><a href="#" class="navbar-link"></a></p>
       
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mina sidor<b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Mina sidor<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="redigeraAnvandareKnapp"><a href="#">Redigera</a></li>
-            <li><a href="#">xxx</a></li>
+          	<li id="installningarKnapp"><a href="#">Inställningar</a></li>
+          	<li id="minaLanKnapp"><a href="#">Mina lån</a></li>
+          	<li id="minaReservationerKnapp"><a href="#">Mina reservationer</a></li>
             <li class="divider"></li>
             <form action="logout" method="get">
             <li><input type="submit" value="Logga ut" class="btn btn-danger btn-sm"></li>
@@ -102,45 +101,15 @@ if (session.getAttribute("sparadRoll") == "AdministratÃ¶r") {
   </div><!-- /.container-fluid -->
 </nav>
 
-
-	<div id="redigeraAnvandare">
-		<form id = "redigera" action="editUser" method = "post" class="navbar-form navbar-left">
-		Användarnamn: <br><input type = "text" name = "userNameEdit" autocomplete="off" placeholder="<%=sparatAnvandarnamn%>..."/>
-		<br>
-		Förnamn: <br><input type = "text" name = "firstNameEdit" autocomplete="off" placeholder="<%=sparatFornamn%>..."/>
-		<br>
-		Efternamn: <br><input type = "text" name = "familyNameEdit" autocomplete="off" placeholder="<%=sparatEfternamn%>..." />
-		<br>
-		Lösenord: <br><input type = "password" name = "passwordEdit" autocomplete="off" placeholder=""/>
-		<br><br>
-		<input type = "submit" class="btn btn-primary btn-sm" value="Uppdatera"/>
-	</form>
-	</div>
-
-
-	<form id = "katalogisera" action="catalog" method = "post" class="navbar-form navbar-left">
-		Titel: <input type = "text" name = "title" class="form-control" placeholder="Titel..."/>
-		<br><br>
-		<input type = "submit" value="Lägg till" class="btn btn-primary"/>
-	</form>
-
-
-
 <div id="listaAllt">
 	<div id="listTitlesFunction">
 	<%
 	Date date = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	%>
-	<strong>Hämtat:</strong> <%=sdf.format(date) %> 
-	<br>
-	<br>
+	<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Hämtat: <%=sdf.format(date) %> </div> 
 	<form>
-	<button type="button" class="btn btn-danger" id="avregistreraKnapp">Avregistrera</button>
-	<button type="button" class="btn btn-danger btn-lg" id="avregistreraKnapp2">
-  	<span class="glyphicon glyphicon-remove"></span> Avregistrera
 	</button>
-	<br><br>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
 	ArrayList<String> list = getLiteratureService.getBooks();
@@ -168,23 +137,26 @@ if (session.getAttribute("sparadRoll") == "AdministratÃ¶r") {
       </form>	
 </div>
 
-<div id="listaPagaendeLan">
-	<p> Kanske skulle vara coolt att använda olika färger beroende på hur länge lånet har pågått.</p>
-	<%
-	GetLoansService gls = new GetLoansService();
-	ArrayList<String> loanList = gls.getLoans();
-	for(String loan: loanList){
-	%>
-	 <ul class="list-group">
-	 <li class="list-group-item list-group-item-warning" id="lanListning">
-	<%=loan %></li>
-	<%}%>
-	</ul>
-	</div>
-	
-
+<div id="valkomsttext">
+<div class="media">
+  <a class="pull-left" href="#">
+    <span class="glyphicon glyphicon-share-alt"></span>
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading">Välkommen <%=sparatFornamn%> <%=sparatEfternamn%>!</h4>
+    <br>
+    <h4 class="media-heading">Nyheter:</h4>
+    <ul>
+    <li>Kanske nyheter vad gäller policys.. osv</li>
+    <li>[LISTNING FRÅN DATABAS.. kanske typ 5,6 verk]</li>
+    </ul>
+  </div>
 </div>
-
+</div>
+ 
+	
+	</p>
+</div>
 
 
 	<!-- Svar ifrån backend. ------------------------------------------ -->

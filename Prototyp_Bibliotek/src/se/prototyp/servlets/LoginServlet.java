@@ -82,9 +82,8 @@ public class LoginServlet extends HttpServlet {
 			String postnummer = userInfo.get(7);
 			String telefon = userInfo.get(8);
 			String epost = userInfo.get(9);
-			/*
 			String roll = userInfo.get(10);
-			*/
+
 			
 			
 			// Sätter in användardatan i sessionen.
@@ -98,14 +97,24 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("sparatPostnummer", postnummer);
 			session.setAttribute("sparadTelefon", telefon);
 			session.setAttribute("sparadEpost", epost);
-			/*
 			session.setAttribute("sparadRoll", roll);
-			*/
 			
 			// Loggas in.
+			if(roll.equals("Låntagare")){
+				dispatcher = request.getRequestDispatcher("lantagare.jsp");
+				dispatcher.forward(request, response);
+				return;
+			}
+			if(roll.equals("Bibliotekarie")){
+				dispatcher = request.getRequestDispatcher("bibliotekarie.jsp");
+				dispatcher.forward(request, response);
+				return;
+			}
 			dispatcher = request.getRequestDispatcher("main.jsp");
 			dispatcher.forward(request, response);
 			return;
+
+
 		}
 		
 		// Om användaren inte redan finns i bibliotek informatikas databas så tittar vi om vi kan skapa användaren ifrån persondatabasen.
@@ -129,7 +138,7 @@ public class LoginServlet extends HttpServlet {
 			/*
 			String roll = userInfo.get(10);
 			*/
-
+			
 			// Sätter in användardatan i sessionen.
 			session.setAttribute("sparatAnvandarnamn", anvandarnamn);
 			session.setAttribute("sparatLosenord", losenord);

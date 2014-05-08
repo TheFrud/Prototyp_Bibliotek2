@@ -15,7 +15,7 @@ $(document).ready(function() {
 	$(".taBortInput").hide();
 	$("#listaPagaendeLan").hide();
 	$("#redigeraAnvandare").hide();
-	
+	$("#tooltip").hide();
 	
 	// N�r registerknappen klickats p� k�r vi denna funktion..
 	// Denna knapp har getts id="register" i dokumentet login.jsp.
@@ -43,6 +43,7 @@ $(document).ready(function() {
 		$("#searchedTitle").hide();
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
+		$("#valkomsttext").hide();
 
 	});
 	
@@ -53,6 +54,7 @@ $(document).ready(function() {
 		$("#searchedTitle").hide();
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
+		$("#valkomsttext").hide();
 	});
 	$("#listaEnskildTitelKnapp").click(function(){
 		$("#listaEnskildTitel").fadeToggle(500);
@@ -61,6 +63,7 @@ $(document).ready(function() {
 		$("#searchedTitle").hide();
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
+		$("#valkomsttext").hide();
 	});
 	
 	$("#pagaendeLanKnapp").click(function(){
@@ -70,6 +73,7 @@ $(document).ready(function() {
 		$("#searchedTitle").hide();
 		$("#listaEnskildTitel").hide();
 		$("#redigeraAnvandare").hide();
+		$("#valkomsttext").hide();
 	});
 	
 	$("#redigeraAnvandareKnapp").click(function(){
@@ -79,6 +83,7 @@ $(document).ready(function() {
 		$("#searchedTitle").hide();
 		$("#listaEnskildTitel").hide();
 		$("#listaPagaendeLan").hide();
+		$("#valkomsttext").hide();
 	});
 	
 	$("#avregistreraKnapp").click(function(){
@@ -88,6 +93,10 @@ $(document).ready(function() {
 	});
 	$("li[name^='bokListning']").click(function(){
 		$(this).toggleClass(".list-group-item list-group-item-danger");
+	});
+	$("#fragetecken").hover(function(){
+		$("#tooltip").fadeToggle(360);
+
 	});
 });
 

@@ -22,9 +22,16 @@
 		<br>
 		Lösenord:<br> <input type = "password" name = "losenordInloggning" autocomplete="off" />
 		<br><br>
-		<input type = "submit" value="Logga in användare" class="btn btn-primary btn-sm"/>
+		<input type = "submit" value="Logga in användare" class="btn btn-primary btn-sm" />
+
+		
+
 	</form>
 	<br>
+	<!-- Fortsätt utan att logga in -->
+	<br>
+	<br>
+	<!--  
 	<form action="login" method = "get" >
 		<input type = "submit" value="Logga in som gäst" class="btn btn-warning btn-sm"/>
 	</form>
@@ -59,7 +66,7 @@
 		<br><br>
 		<input type = "submit" value="Registrera" class="btn btn-primary btn-sm"/>
 	</form>
-	
+	-->
 	<!-- Svar ifrån backend.------------------------------------------------- -->
 	
 	<% 
