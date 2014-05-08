@@ -24,16 +24,31 @@
 
 
 <%
-String savedUserName = (String) session.getAttribute("savedUserName");
-String savedFirstName = (String) session.getAttribute("savedFirstName");
-String savedFamilyName = (String) session.getAttribute("savedFamilyName");
-String savedPassword = (String) session.getAttribute("savedPassword");
+String sparatAnvandarnamn = (String) session.getAttribute("sparatAnvandarnamn");
+String sparatLosenord = (String) session.getAttribute("sparatLosenord");
+String sparatPersonnummer = (String) session.getAttribute("sparatPersonnummer");
+String sparatFornamn = (String) session.getAttribute("sparatFornamn");
+String sparatEfternamn = (String) session.getAttribute("sparatEfternamn");
+String sparadGatuadress = (String) session.getAttribute("sparadGatuadress");
+String sparadStad = (String) session.getAttribute("sparadStad");
+String sparadTelefon = (String) session.getAttribute("sparadTelefon");
+String sparadEpost = (String) session.getAttribute("sparadEpost");
+/*
+String sparadRoll = (String) session.getAttribute("sparadRoll");
+*/
 %>
 
 <% 
-if (session.getAttribute("savedUserName") == null) {
+// Om personen inte är inloggad så får den inte se sidan.
+if (session.getAttribute("sparatAnvandarnamn") == null) {
     response.sendRedirect("login.jsp"); // Not logged in, redirect to login page.
 }
+/*
+if(sparadRoll.equals("Administratör")){
+	System.out.println("Hej!");
+}
+*/
+
 %>
 
 <div class="page-header">
@@ -76,7 +91,7 @@ if (session.getAttribute("savedUserName") == null) {
       
       <ul class="nav navbar-nav navbar-right">
       
-      <p class="navbar-text navbar-right">Inloggad som <a href="#" class="navbar-link"><%=savedUserName%></a></p>
+      <p class="navbar-text navbar-right">Inloggad som <a href="#" class="navbar-link"><%=sparatAnvandarnamn%></a></p>
       
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profil <b class="caret"></b></a>
@@ -97,11 +112,11 @@ if (session.getAttribute("savedUserName") == null) {
 
 	<div id="redigeraAnvandare">
 		<form id = "redigera" action="editUser" method = "post" class="navbar-form navbar-left">
-		Användarnamn: <br><input type = "text" name = "userNameEdit" autocomplete="off" placeholder="<%=savedUserName%>..."/>
+		Användarnamn: <br><input type = "text" name = "userNameEdit" autocomplete="off" placeholder="<%=sparatAnvandarnamn%>..."/>
 		<br>
-		Förnamn: <br><input type = "text" name = "firstNameEdit" autocomplete="off" placeholder="<%=savedFirstName%>..."/>
+		Förnamn: <br><input type = "text" name = "firstNameEdit" autocomplete="off" placeholder="<%=sparatFornamn%>..."/>
 		<br>
-		Efternamn: <br><input type = "text" name = "familyNameEdit" autocomplete="off" placeholder="<%=savedFamilyName%>..." />
+		Efternamn: <br><input type = "text" name = "familyNameEdit" autocomplete="off" placeholder="<%=sparatEfternamn%>..." />
 		<br>
 		Lösenord: <br><input type = "password" name = "passwordEdit" autocomplete="off" placeholder=""/>
 		<br><br>
@@ -135,7 +150,7 @@ if (session.getAttribute("savedUserName") == null) {
 	<br><br>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getLiterature();
+	ArrayList<String> list = getLiteratureService.getBooks();
 	int lineCount = 0;
 	for(String book: list){
 		lineCount++;

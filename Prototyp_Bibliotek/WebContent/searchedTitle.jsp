@@ -135,7 +135,7 @@ if (session.getAttribute("savedUserName") == null) {
 	<br><br>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getLiterature();
+	ArrayList<String> list = getLiteratureService.getBooks();
 	int lineCount = 0;
 	for(String book: list){
 		lineCount++;
@@ -180,7 +180,7 @@ if (session.getAttribute("savedUserName") == null) {
 <div id="searchedTitle">
 	<%
 	GetLiteratureService getLiteratureService2 = new GetLiteratureService();
-	ArrayList<String> list2 = getLiteratureService2.getLiterature(request.getParameter("soktTitel"));
+	ArrayList<String> list2 = getLiteratureService2.getBooks(request.getParameter("soktTitel"));
 	for(String book: list2){
 	%>
 	Bok: <%=book %>

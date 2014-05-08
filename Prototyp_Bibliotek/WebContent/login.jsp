@@ -17,13 +17,16 @@
 <h1>  <a href="login.jsp"> <span class="glyphicon glyphicon-book"></span> Bibliotek Informatika</a> <small>Inloggning</small> </h1>
 </button>
 </div>
-
 	<form action="login" method = "post" >
-		Användarnamn:<br> <input type = "text" name = "userNameLogin" autocomplete="off" />
+		Användarnamn:<br> <input type = "text" name = "anvandarnamnInloggning" autocomplete="off" />
 		<br>
-		Lösenord:<br> <input type = "password" name = "passwordLogin" autocomplete="off" />
+		Lösenord:<br> <input type = "password" name = "losenordInloggning" autocomplete="off" />
 		<br><br>
-		<input type = "submit" value="Logga in" class="btn btn-primary btn-sm"/>
+		<input type = "submit" value="Logga in användare" class="btn btn-primary btn-sm"/>
+	</form>
+	<br>
+	<form action="login" method = "get" >
+		<input type = "submit" value="Logga in som gäst" class="btn btn-warning btn-sm"/>
 	</form>
 	<br>
 	
@@ -34,13 +37,25 @@
 		<div class="page-header">
   			<h1>Registrera <small></small></h1>
 		</div>
-		Användarnamn: <br><input type = "text" name = "userNameRegister" autocomplete="off" />
+		Användarnamn: <br><input type = "text" name = "anvandarnamnRegistrering" autocomplete="off" />
 		<br>
-		Förnamn:<br> <input type = "text" name = "firstNameRegister" autocomplete="off" />
+		Lösenord:<br> <input type = "password" name = "losenordRegistrering" autocomplete="off" />
 		<br>
-		Efternamn:<br> <input type = "text" name = "familyNameRegister" autocomplete="off" />
+		Personnummer:<br> <input type = "text" name = "personnummerRegistrering" autocomplete="off" />
 		<br>
-		Lösenord:<br> <input type = "password" name = "passwordRegister" autocomplete="off" />
+		Förnamn:<br> <input type = "text" name = "fornamnRegistrering" autocomplete="off" />
+		<br>
+		Efternamn:<br> <input type = "text" name = "efternamnRegistrering" autocomplete="off" />
+		<br>
+		Gatuadress: <br><input type = "text" name = "gatuadressRegistrering" autocomplete="off" />
+		<br>
+		Stad:<br> <input type = "text" name = "stadRegistrering" autocomplete="off" />
+		<br>
+		Postnummer:<br> <input type = "text" name = "postnummerRegistrering" autocomplete="off" />
+		<br>
+		Telefon:<br> <input type = "text" name = "telefonRegistrering" autocomplete="off" />
+		<br>
+		E-post:<br> <input type = "text" name = "epostRegistrering" autocomplete="off" />
 		<br><br>
 		<input type = "submit" value="Registrera" class="btn btn-primary btn-sm"/>
 	</form>

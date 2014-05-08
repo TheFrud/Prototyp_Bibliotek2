@@ -1,19 +1,24 @@
 package se.prototyp.services;
 
 import java.util.ArrayList;
+
 import se.prototyp.database.DBOperations;
 
-public class GetLiteratureService {
+public class GetLiteratureService extends se.prototyp.database.DBConnection {
 
-	DBOperations dbo = new DBOperations();
+
+	public ArrayList<String> getBooks() {
+		return super.getBooks();
+	}
 	
-	public ArrayList<String> getLiterature(){
-		return dbo.getBooks();
+	public ArrayList<String> getBooks(String title) {
+		return super.getBooks(title);
 	}
-	public ArrayList<String> getLiterature(String title){
-		return dbo.getBooks(title);
+	
+	public int getNumberOfTitles() {
+		return super.getNumberOfTitles();
 	}
-	public int getNumberOfTitles(){
-		return dbo.getNumberOfTitles();
-	}
+	
+
+
 }

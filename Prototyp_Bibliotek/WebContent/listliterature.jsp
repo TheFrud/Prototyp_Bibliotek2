@@ -93,11 +93,11 @@
 	Date date = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	%>
-	<strong>H�mtat:</strong> <%=sdf.format(date) %> 
+	<strong>Hämtat:</strong> <%=sdf.format(date) %> 
 	<br>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getLiterature();
+	ArrayList<String> list = getLiteratureService.getBooks();
 	for(String book: list){
 	%>
 	Bok: <%=book %>

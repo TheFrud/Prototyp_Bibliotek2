@@ -1,3 +1,6 @@
+// ANVÄNDS EJ
+// MEN LÅT VARA KVAR
+
 package se.prototyp.database;
 
 import java.sql.PreparedStatement;

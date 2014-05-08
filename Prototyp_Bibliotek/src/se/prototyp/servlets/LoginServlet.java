@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import se.prototyp.services.DBConsistencyService;
 import se.prototyp.services.GetUserInfoService;
 import se.prototyp.services.LoginService;
 
@@ -21,45 +23,140 @@ import se.prototyp.services.LoginService;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	
-	
-
+	// Gästinlogging
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// Sätter in gästdata i sessionen.
+		HttpSession session = request.getSession();
+		session.setAttribute("sparatAnvandarnamn", "Gästkonto");
+		session.setAttribute("sparatLosenord", "");
+		session.setAttribute("sparatPersonnummer", "");
+		session.setAttribute("sparatFornamn", "");
+		session.setAttribute("sparatEfternamn", "");
+		session.setAttribute("sparadGatuadress", "");
+		session.setAttribute("sparadStad", "");
+		session.setAttribute("sparatPostnummer", "");
+		session.setAttribute("sparadTelefon", "");
+		session.setAttribute("sparadEpost", "");
+		/*
+		session.setAttribute("sparadRoll", "Gäst");
+		*/
 		
+		RequestDispatcher dispatcher;
+		dispatcher = request.getRequestDispatcher("main.jsp");
+		dispatcher.forward(request, response);
+		return;
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String userName = request.getParameter("userNameLogin");
-		String password = request.getParameter("passwordLogin");
+		String anvandarnamnIn = request.getParameter("anvandarnamnInloggning");
+		String losenordIn = request.getParameter("losenordInloggning");
 		LoginService loginService = new LoginService();
+		DBConsistencyService dbConsistencyService = new DBConsistencyService();
 		RequestDispatcher dispatcher;
 		
-		if(loginService.authenticate(userName, password)){
+		// Tittar så att användaren fyllt i alla fält.
+		if(anvandarnamnIn == "" || losenordIn == ""){
+			dispatcher = request.getRequestDispatcher("login.jsp");
+			request.setAttribute("svar", "Du måste fylla i samtliga fält.");
+			dispatcher.forward(request, response);
+			return;
+		}
+
+		// Vi tittar om användaren redan finns på i bibliotek informatikas databas.
+		if(loginService.authenticate(anvandarnamnIn, losenordIn)){
 	
+			// Vi tar reda på användardatan.
 			GetUserInfoService getUserInfoService = new GetUserInfoService();
-			ArrayList<String> userInfo = getUserInfoService.getUserInfo(userName, password);
+			ArrayList<String> userInfo = getUserInfoService.getUserInfo(anvandarnamnIn, losenordIn);
 			HttpSession session = request.getSession();
 			
-			String firstName = userInfo.get(2);
-			String familyName = userInfo.get(3);
-			String id = userInfo.get(0);
+			String personnummer = userInfo.get(0);
+			String anvandarnamn = userInfo.get(1);
+			String losenord = userInfo.get(2);
+			String fornamn = userInfo.get(3);
+			String efternamn = userInfo.get(4);
+			String gatuadress = userInfo.get(5);
+			String stad = userInfo.get(6);
+			String postnummer = userInfo.get(7);
+			String telefon = userInfo.get(8);
+			String epost = userInfo.get(9);
+			/*
+			String roll = userInfo.get(10);
+			*/
 			
-			session.setAttribute("savedUserId", id);
-			session.setAttribute("savedUserName", userName);
-			session.setAttribute("savedFirstName", firstName);
-			session.setAttribute("savedFamilyName", familyName);
-			session.setAttribute("savedPassword", password);
 			
+			// Sätter in användardatan i sessionen.
+			session.setAttribute("sparatAnvandarnamn", anvandarnamn);
+			session.setAttribute("sparatLosenord", losenord);
+			session.setAttribute("sparatPersonnummer", personnummer);
+			session.setAttribute("sparatFornamn", fornamn);
+			session.setAttribute("sparatEfternamn", efternamn);
+			session.setAttribute("sparadGatuadress", gatuadress);
+			session.setAttribute("sparadStad", stad);
+			session.setAttribute("sparatPostnummer", postnummer);
+			session.setAttribute("sparadTelefon", telefon);
+			session.setAttribute("sparadEpost", epost);
+			/*
+			session.setAttribute("sparadRoll", roll);
+			*/
+			
+			// Loggas in.
+			dispatcher = request.getRequestDispatcher("main.jsp");
+			dispatcher.forward(request, response);
+			return;
+		}
+		
+		// Om användaren inte redan finns i bibliotek informatikas databas så tittar vi om vi kan skapa användaren ifrån persondatabasen.
+		if(dbConsistencyService.addUserFromExistingDatabase(anvandarnamnIn, losenordIn)){
+			
+			// Vi tar reda på användardatan.
+			GetUserInfoService getUserInfoService = new GetUserInfoService();
+			ArrayList<String> userInfo = getUserInfoService.getUserInfo(anvandarnamnIn, losenordIn);
+			HttpSession session = request.getSession();
+			
+			String personnummer = userInfo.get(0);
+			String anvandarnamn = userInfo.get(1);
+			String losenord = userInfo.get(2);
+			String fornamn = userInfo.get(3);
+			String efternamn = userInfo.get(4);
+			String gatuadress = userInfo.get(5);
+			String stad = userInfo.get(6);
+			String postnummer = userInfo.get(7);
+			String telefon = userInfo.get(8);
+			String epost = userInfo.get(9);
+			/*
+			String roll = userInfo.get(10);
+			*/
+
+			// Sätter in användardatan i sessionen.
+			session.setAttribute("sparatAnvandarnamn", anvandarnamn);
+			session.setAttribute("sparatLosenord", losenord);
+			session.setAttribute("sparatPersonnummer", personnummer);
+			session.setAttribute("sparatFornamn", fornamn);
+			session.setAttribute("sparatEfternamn", efternamn);
+			session.setAttribute("sparadGatuadress", gatuadress);
+			session.setAttribute("sparadStad", stad);
+			session.setAttribute("sparatPostnummer", postnummer);
+			session.setAttribute("sparadTelefon", telefon);
+			session.setAttribute("sparadEpost", epost);
+			/*
+			session.setAttribute("sparadRoll", roll);
+			*/
+			
+			// Loggas in.
+			request.setAttribute("svar", "Välkommen " + fornamn + " " + efternamn + "! Du är nu registrerad på Bibliotek Informatika.");
 			dispatcher = request.getRequestDispatcher("main.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}
 		else{
+			// Användaren existerar ej.
 			dispatcher = request.getRequestDispatcher("login.jsp");
 			request.setAttribute("svar", "Fel användarnamn eller lösenord!");
 			dispatcher.forward(request, response);
+			return;
 		}
 		
 		

@@ -3,12 +3,16 @@ package se.prototyp.database;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 public class DBConnection {
     Connection connection = null;
+    Connection connection2 = null;
     Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     
+    
+    // CONNECTION 1
     public Connection createConnection() {
 	Connection localConn = null;
 
@@ -38,23 +42,163 @@ public class DBConnection {
 		//System.out.println("Congratulations! You are now connected to the database!");
 	else
 	    System.out.println("We should never get here.");
-
 	return localConn;
     }
 
+    
+    
+    // CONNECTION 2
+    public Connection createConnection2() {
+	Connection localConn = null;
+
+	try { 
+	    Class.forName("com.mysql.jdbc.Driver");
+	} catch (ClassNotFoundException cnfe) {
+	    System.err.println("Couldn't find driver class:");
+	    cnfe.printStackTrace();
+	    System.exit(1);
+	}
+//	System.out.println("Everything seems ok!");
+  
+	try {
+//		localConn = DriverManager.getConnection("jdbc:mysql://46.239.118.12:3306/prototyp_bibliotek","frud", "ultrajacka112");
+	    localConn = DriverManager.getConnection("jdbc:mysql://192.168.1.15:3306/personregister","frud", "ultrajacka112");
+//		localConn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/prototyp_bibliotek","root", "chocs");
+//	    localConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/prototyp_bibliotek","root", "");
+	    
+	} catch (SQLException se) {
+	    System.out.println("Couldn't connect: print out a stack trace and exit.");
+	    se.printStackTrace();
+	    System.exit(1);
+	}
+  
+	if (localConn != null)
+	    System.out.println("");
+		//System.out.println("Congratulations! You are now connected to the database!");
+	else
+	    System.out.println("We should never get here.");
+	return localConn;
+    }
+    
+    
+    
+    
+    
     public void runDB(){
     	connection = createConnection();
+    	connection2 = createConnection2();
     }
     
     public DBConnection(){
     	runDB();
     }
-	public boolean checkUserExistance(String userName, String password){
+    
+    
+	public boolean addUserFromExistingDatabase(String anvandarnamnIn, String losenordIn){
+		ArrayList<String> dataFranPersondatabas = new ArrayList<String>();
+		try{
+			// Hämtar data om personen från persondatabasen.
+			preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Användarnamn = ? AND Lösenord = ?");
+			preparedStatement.setString(1, anvandarnamnIn);
+			preparedStatement.setString(2, losenordIn);
+			resultSet = preparedStatement.executeQuery();
+			if(!resultSet.next()){
+				return false;
+			}
+			// Sparar resultatet i en lista
+			dataFranPersondatabas.add(resultSet.getString(1));
+			dataFranPersondatabas.add(resultSet.getString(2));
+			dataFranPersondatabas.add(resultSet.getString(3));
+			dataFranPersondatabas.add(resultSet.getString(4));
+			dataFranPersondatabas.add(resultSet.getString(5));
+			dataFranPersondatabas.add(resultSet.getString(6));
+			dataFranPersondatabas.add(resultSet.getString(7));
+			dataFranPersondatabas.add(resultSet.getString(8));
+			dataFranPersondatabas.add(resultSet.getString(9));
+			dataFranPersondatabas.add(resultSet.getString(10));
+			
+			// Sparar datan från listan i strängar
+			String personnummer = dataFranPersondatabas.get(0);
+			String anvandarnamn = dataFranPersondatabas.get(1);
+			String losenord = dataFranPersondatabas.get(2);
+			String fornamn = dataFranPersondatabas.get(3);
+			String efternamn = dataFranPersondatabas.get(4);
+			String gatuadress = dataFranPersondatabas.get(5);
+			String stad = dataFranPersondatabas.get(6);
+			String postnummer = dataFranPersondatabas.get(7);
+			String telefon = dataFranPersondatabas.get(8);
+			String epost = dataFranPersondatabas.get(9);
+			// Lägger in datan i bibliotek informatikas databas
+			preparedStatement = connection.prepareStatement("INSERT INTO Person (Personnummer, Användarnamn, Lösenord, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
+			preparedStatement.setString(1, personnummer);
+			preparedStatement.setString(2, anvandarnamn);
+			preparedStatement.setString(3, losenord);
+			preparedStatement.setString(4, fornamn);
+			preparedStatement.setString(5, efternamn);
+			preparedStatement.setString(6, gatuadress);
+			preparedStatement.setString(7, stad);
+			preparedStatement.setString(8, postnummer);
+			preparedStatement.setString(9, telefon);
+			preparedStatement.setString(10, epost);
+			int forandring = preparedStatement.executeUpdate();
+			// Om operationen lyckades så returnerar vi sant
+			if(forandring > 0){
+				return true;
+			}
+			
+		}
+		catch(SQLException se){
+			System.out.println(se.getMessage());
+		}
+		// Om operationen inte lyckades returnerar vi falskt
+		return false;
+	}
+    
+    
+    // Kollar om personen finns i persondatabasen på skolan
+	public boolean checkUserExistanceAndRole(String anvandarnamn, String losenord){
+		try{
+    		// Returnera 1 om personen är både student och anställd
+    		preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Användarnamn = ? AND Lösenord = ? AND Personnummer IN (SELECT Personnummer FROM Rollinnehav)");
+    		preparedStatement.setString(1, anvandarnamn);
+    		preparedStatement.setString(2, losenord);
+    		resultSet = preparedStatement.executeQuery();
+    		if(resultSet.next()){
+    			return true;
+    		}
+
+    	}
+    	catch(SQLException se){
+    		System.out.println(se.getMessage());
+    	}
+    	// Returnera 0 om personen inte existerar i databasen
+    	return false;
+    }
+	// Kollar om det lösenord personen skrivit in stämmer överrens med det redan lagrade i persondatabasen
+	public boolean checkIfPasswordExistsInSchoolDatabase(String personnummer, String losenord){
+		boolean exists = false;
+		try{
+			preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Lösenord = ? AND Personnummer = ?");
+			preparedStatement.setString(1, losenord);
+			preparedStatement.setString(2, personnummer);			
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()){
+				exists = true;
+			}
+		}
+		catch(SQLException sqle){
+			System.out.println(sqle.getMessage());
+		}
+		return exists;
+	}
+	
+	
+	public boolean checkUserExistance(String anvandarnamn, String losenord){
     	boolean memberExist = false;
     	try{
-    		preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE UserName = ? AND Password = ?");
-    		preparedStatement.setString(1, userName);
-    		preparedStatement.setString(2, password);
+    		preparedStatement = connection.prepareStatement("SELECT * FROM Person WHERE Användarnamn = ? AND Lösenord = ?");
+    		preparedStatement.setString(1, anvandarnamn);
+    		preparedStatement.setString(2, losenord);
     		resultSet = preparedStatement.executeQuery();
     		if(resultSet.next()){
     			memberExist = true;
@@ -66,14 +210,21 @@ public class DBConnection {
     	return memberExist;
     }
 	
-	public boolean addUser(String userName, String firstName, String familyName, String password){
+	public boolean addUser(String anvandarnamn, String losenord, String personnummer, String fornamn, 
+			String efternamn, String gatuadress, String stad, String postnummer, String telefon, String epost){
 		boolean userAdded = false;
 		try{
-			preparedStatement = connection.prepareStatement("INSERT INTO user (UserName, FirstName, SecondName, Password) VALUES(?,?,?,?)");
-			preparedStatement.setString(1, userName);
-			preparedStatement.setString(2, firstName);
-			preparedStatement.setString(3, familyName);
-			preparedStatement.setString(4, password);
+			preparedStatement = connection.prepareStatement("INSERT INTO Person (Användarnamn, Lösenord, Personnummer, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES(?,?,?,?,?,?,?,?,?,?)");
+			preparedStatement.setString(1, anvandarnamn);
+			preparedStatement.setString(2, losenord);
+			preparedStatement.setString(3, personnummer);
+			preparedStatement.setString(4, fornamn);
+			preparedStatement.setString(5, efternamn);
+			preparedStatement.setString(6, gatuadress);
+			preparedStatement.setString(7, stad);
+			preparedStatement.setString(8, postnummer);
+			preparedStatement.setString(9, telefon);
+			preparedStatement.setString(10, epost);
 			int change = preparedStatement.executeUpdate();
 			if(change > 0){
 				userAdded = true;
@@ -162,8 +313,8 @@ public class DBConnection {
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				loanLine = "";
-				loanLine = loanLine + "LÃ¥Ã¥ntagare: " + resultSet.getString(1);
-				loanLine = loanLine + "| LÃ¥Ã¥nat verk: " + resultSet.getString(2);
+				loanLine = loanLine + "Låntagare: " + resultSet.getString(1);
+				loanLine = loanLine + "| Lånat verk: " + resultSet.getString(2);
 				list.add(loanLine);
 			}
 		}
@@ -173,21 +324,38 @@ public class DBConnection {
 		
 		return list;
 	}
-	public ArrayList<String> getUserInfoDB(String userName, String password){
+	public ArrayList<String> getUserInfo(String anvandarnamn, String losenord){
 		ArrayList<String> list = new ArrayList<String>();
 		try{
-			preparedStatement = connection.prepareStatement("SELECT * from user WHERE UserName = ? AND Password = ?");
-			preparedStatement.setString(1, userName);
-			preparedStatement.setString(2, password);
+			// Hämta all data ifrån Person-tabellen och spara i en lista
+			preparedStatement = connection.prepareStatement("SELECT * from Person WHERE Användarnamn = ? AND Lösenord = ?");
+			preparedStatement.setString(1, anvandarnamn);
+			preparedStatement.setString(2, losenord);
 			resultSet = preparedStatement.executeQuery();
+			
 			while(resultSet.next()){
-				list.add(String.valueOf(resultSet.getInt(1)));
+				list.add(resultSet.getString(1));
 				list.add(resultSet.getString(2));
 				list.add(resultSet.getString(3));
 				list.add(resultSet.getString(4));
 				list.add(resultSet.getString(5));
+				list.add(resultSet.getString(6));
+				list.add(resultSet.getString(7));
+				list.add(resultSet.getString(8));
+				list.add(resultSet.getString(9));
+				list.add(resultSet.getString(10));
 			}
 
+			
+			// Hämta data om personens roll och lägg i slutet av lista
+			preparedStatement = connection.prepareStatement("SELECT Roll FROM Rollinnehav WHERE Personnummer IN (SELECT Personnummer FROM Person WHERE Användarnamn = ?)");
+			preparedStatement.setString(1, anvandarnamn);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()){
+				list.add(resultSet.getString(1));
+			}
+
+			
 
 		}
 		catch(SQLException sqle){
@@ -196,7 +364,7 @@ public class DBConnection {
 		return list;
 	}
 
-	public boolean editUserDB(int id, String userName, String firstName, String familyName, String password){
+	public boolean editUser(int id, String userName, String firstName, String familyName, String password){
 		boolean edited = false;
 		try{
 			preparedStatement = connection.prepareStatement("UPDATE user SET UserName = ?, FirstName = ?, SecondName = ?, Password = ? WHERE ID = ?");
@@ -216,11 +384,11 @@ public class DBConnection {
 		return edited;
 
 	}
-	public boolean checkIfPasswordExistsDB(String password){
+	public boolean checkIfPasswordExists(String losenord){
 		boolean exists = false;
 		try{
-			preparedStatement = connection.prepareStatement("SELECT * from user WHERE Password = ?");
-			preparedStatement.setString(1, password);
+			preparedStatement = connection.prepareStatement("SELECT * from Person WHERE Lösenord = ?");
+			preparedStatement.setString(1, losenord);
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()){
 				exists = true;
@@ -231,11 +399,11 @@ public class DBConnection {
 		}
 		return exists;
 	}
-	public boolean checkIfUserNameExistsDB(String userName){
+	public boolean checkIfUserNameExists(String anvandarnamn){
 		boolean exists = false;
 		try{
-			preparedStatement = connection.prepareStatement("SELECT * from user WHERE UserName = ?");
-			preparedStatement.setString(1, userName);
+			preparedStatement = connection.prepareStatement("SELECT * from Person WHERE Användarnamn = ?");
+			preparedStatement.setString(1, anvandarnamn);
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()){
 				exists = true;

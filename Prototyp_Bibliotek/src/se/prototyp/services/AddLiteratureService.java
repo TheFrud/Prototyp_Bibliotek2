@@ -1,13 +1,11 @@
 package se.prototyp.services;
 
-import se.prototyp.database.DBOperations;
+public class AddLiteratureService extends se.prototyp.database.DBConnection{
 
-public class AddLiteratureService {
-
-	DBOperations dbo = new DBOperations();
-	
-	public int addLiterature(String title){
-		return dbo.addLiterature(title);
+	public int addLiterature(String title) {
+		return super.addLiterature(title);
 	}
+	
+
 	
 }
