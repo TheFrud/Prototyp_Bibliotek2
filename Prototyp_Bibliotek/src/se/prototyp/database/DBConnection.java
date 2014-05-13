@@ -42,6 +42,7 @@ public class DBConnection {
 		//System.out.println("Congratulations! You are now connected to the database!");
 	else
 	    System.out.println("We should never get here.");
+	System.out.println("Connection 1");
 	return localConn;
     }
 
@@ -77,6 +78,7 @@ public class DBConnection {
 		//System.out.println("Congratulations! You are now connected to the database!");
 	else
 	    System.out.println("We should never get here.");
+	System.out.println("Connection 2");
 	return localConn;
     }
     
@@ -94,7 +96,7 @@ public class DBConnection {
     }
     
     
-	public boolean addUserFromExistingDatabase(String anvandarnamnIn, String losenordIn){
+	public boolean addUserFromExistingDB(String anvandarnamnIn, String losenordIn){
 		ArrayList<String> dataFranPersondatabas = new ArrayList<String>();
 		try{
 			// Hämtar data om personen från persondatabasen.
@@ -175,7 +177,7 @@ public class DBConnection {
     	return false;
     }
 	// Kollar om det lösenord personen skrivit in stämmer överrens med det redan lagrade i persondatabasen
-	public boolean checkIfPasswordExistsInSchoolDatabase(String personnummer, String losenord){
+	public boolean checkIfUserExistsInSchoolDB(String personnummer, String losenord){
 		boolean exists = false;
 		try{
 			preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Lösenord = ? AND Personnummer = ?");
@@ -235,7 +237,7 @@ public class DBConnection {
 		}
 		return userAdded;
 	}
-	public ArrayList<String> getBooks(){
+	public ArrayList<String> getTitles(){
 		ArrayList<String> list = new ArrayList<String>();
 		String bookLine;
 		try{
@@ -253,7 +255,7 @@ public class DBConnection {
 		}
 		return list;
 	}
-	public ArrayList<String> getBooks(String title){
+	public ArrayList<String> getTitles(String title){
 		ArrayList<String> list = new ArrayList<String>();
 		String bookLine;
 		try{
@@ -415,3 +417,4 @@ public class DBConnection {
 		return exists;
 	}
 }
+

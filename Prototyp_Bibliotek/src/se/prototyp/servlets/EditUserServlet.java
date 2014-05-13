@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import se.prototyp.database.DBOperations;
 import se.prototyp.services.DBConsistencyService;
 import se.prototyp.services.EditUserService;
 

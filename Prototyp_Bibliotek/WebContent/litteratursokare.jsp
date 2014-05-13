@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"
     import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
     import="java.text.SimpleDateFormat" import="java.util.Date"
-    import="java.util.Collections" import="se.prototyp.services.GetLoansService"%>
+    import="java.util.Collections" import="se.prototyp.services.GetLoansService"
+    import="se.prototyp.database.DBConnect"
+    %>
     
 <!DOCTYPE html>
 <html>	
@@ -33,6 +35,7 @@ String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
 
+
 %>
 
 <% 
@@ -43,6 +46,7 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 
 
 %>
+
 
 <div class="page-header">
 <h1>  <a href="litteratursokare.jsp"> <span class="glyphicon glyphicon-book"></span> Bibliotek Informatika</a> <small></small> </h1>
@@ -73,7 +77,7 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
             GetLiteratureService gts = new GetLiteratureService();
   			int amount = gts.getNumberOfTitles()+1;
             %>
-            <%=amount %>
+            <%=amount %>	
             </span></a></li>
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt verk</a></li>
           </ul>
@@ -105,8 +109,7 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 	<form>
 	</button>
 	<%
-	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getBooks();
+	ArrayList<String> list = gts.getTitles();
 	int lineCount = 0;
 	for(String book: list){
 		lineCount++;

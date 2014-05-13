@@ -19,7 +19,7 @@ public class GetLiteratureServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		GetLiteratureService getLiteratureService = new GetLiteratureService();
-		ArrayList<String> literature = getLiteratureService.getBooks();
+		ArrayList<String> literature = getLiteratureService.getTitles();
 		RequestDispatcher dispatcher;
 		
 		dispatcher = req.getRequestDispatcher("main.jsp");
@@ -33,7 +33,7 @@ public class GetLiteratureServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String title = req.getParameter("soktTitel");
 		GetLiteratureService getLiteratureService = new GetLiteratureService();
-		ArrayList<String> literature = getLiteratureService.getBooks(title);
+		ArrayList<String> literature = getLiteratureService.getTitles(title);
 		RequestDispatcher dispatcher;
 
 		dispatcher = req.getRequestDispatcher("searchedTitle.jsp");

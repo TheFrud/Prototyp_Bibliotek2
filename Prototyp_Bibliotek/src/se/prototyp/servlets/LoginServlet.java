@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		// Vi tittar om användaren redan finns på i bibliotek informatikas databas.
-		if(loginService.authenticate(anvandarnamnIn, losenordIn)){
+		if(dbConsistencyService.autentisera(anvandarnamnIn, losenordIn)){
 	
 			// Vi tar reda på användardatan.
 			GetUserInfoService getUserInfoService = new GetUserInfoService();
@@ -118,7 +118,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		// Om användaren inte redan finns i bibliotek informatikas databas så tittar vi om vi kan skapa användaren ifrån persondatabasen.
-		if(dbConsistencyService.addUserFromExistingDatabase(anvandarnamnIn, losenordIn)){
+		if(loginService.addUserFromExistingDB(anvandarnamnIn, losenordIn)){
 			
 			// Vi tar reda på användardatan.
 			GetUserInfoService getUserInfoService = new GetUserInfoService();

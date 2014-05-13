@@ -138,7 +138,7 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 	</button>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getBooks();
+	ArrayList<String> list = getLiteratureService.getTitles();
 	int lineCount = 0;
 	for(String book: list){
 		lineCount++;

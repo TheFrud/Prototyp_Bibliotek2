@@ -1,3 +1,5 @@
+/*
+
 package se.prototyp.servlets;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import se.prototyp.services.RegisterService;
 /**
  * Servlet implementation class RegisterServlet
  */
+/*
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -53,7 +56,8 @@ public class RegisterServlet extends HttpServlet {
 			}
 			*/
 			// Vi tittar om lösenordet matchar det i persondatabasen
-			if(!consistency.checkIfPasswordExistsInSchoolDatabase(personnummer, losenord)){
+/*
+			if(!consistency.checkIfUserExistsInSchoolDB(personnummer, losenord)){
 				dispatcher = request.getRequestDispatcher("login.jsp");
 				request.setAttribute("svar", "Detta lösenord stämmer inte överrens med det i vår persondatabas.");
 				dispatcher.forward(request, response);
@@ -80,6 +84,7 @@ public class RegisterServlet extends HttpServlet {
 						*/
 						
 						// Användaren loggas in i session.
+/*
 						HttpSession session = request.getSession();
 						session.setAttribute("sparatPersonnummer", personnummer);
 						session.setAttribute("sparatAnvandarnamn", anvandarnamn);
@@ -117,3 +122,5 @@ public class RegisterServlet extends HttpServlet {
 	}
 
 }
+
+*/
