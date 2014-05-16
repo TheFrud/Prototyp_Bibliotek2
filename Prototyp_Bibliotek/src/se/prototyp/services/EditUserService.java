@@ -28,16 +28,22 @@ public class EditUserService{
 		    return ds.getConnection();
 		  }
 		  
-			public boolean editUser(int id, String userName, String firstName, String familyName, String password){
+			public boolean editUser(String personnummer, String anvandarnamn, String losenord, String fornamn, String efternamn, 
+					String gatuadress, String stad, String postnummer, String telefon, String epost){
 				boolean edited = false;
 				try{
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("UPDATE user SET UserName = ?, FirstName = ?, SecondName = ?, Password = ? WHERE ID = ?");
-					preparedStatement.setString(1, userName);
-					preparedStatement.setString(2, firstName);
-					preparedStatement.setString(3, familyName);
-					preparedStatement.setString(4, password);
-					preparedStatement.setInt(5,id);
+					preparedStatement = connection.prepareStatement("UPDATE Person SET Användarnamn = ?, Lösenord = ?, Förnamn = ?, Efternamn = ?, Gatuadress = ?, Stad = ?, Postnummer = ?, Telefon = ?, Epost = ? WHERE Personnummer = ?");
+					preparedStatement.setString(1, anvandarnamn);
+					preparedStatement.setString(2, losenord);
+					preparedStatement.setString(3, fornamn);
+					preparedStatement.setString(4, efternamn);
+					preparedStatement.setString(5, gatuadress);
+					preparedStatement.setString(6, stad);
+					preparedStatement.setString(7, postnummer);
+					preparedStatement.setString(8, telefon);
+					preparedStatement.setString(9, epost);
+					preparedStatement.setString(10, personnummer);
 					int numOfRowsEdited = preparedStatement.executeUpdate();
 					if(numOfRowsEdited>0){
 						edited = true;

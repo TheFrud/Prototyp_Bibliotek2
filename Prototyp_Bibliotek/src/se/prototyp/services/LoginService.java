@@ -36,7 +36,7 @@ public class LoginService{
 		    return ds.getConnection();
 	 }
 	 private Connection getConnection2() throws SQLException {
-		    return ds.getConnection();
+		    return ds2.getConnection();
 	 }
 
 	public boolean addUserFromExistingDB(String anvandarnamnIn, String losenordIn){
@@ -75,7 +75,8 @@ public class LoginService{
 			String telefon = dataFranPersondatabas.get(8);
 			String epost = dataFranPersondatabas.get(9);
 			// Lägger in datan i bibliotek informatikas databas
-			preparedStatement = connection2.prepareStatement("INSERT INTO Person (Personnummer, Användarnamn, Lösenord, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
+			connection = getConnection();
+			preparedStatement = connection.prepareStatement("INSERT INTO Person (Personnummer, Användarnamn, Lösenord, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
 			preparedStatement.setString(1, personnummer);
 			preparedStatement.setString(2, anvandarnamn);
 			preparedStatement.setString(3, losenord);

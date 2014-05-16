@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 
-		// Vi tittar om användaren redan finns på i bibliotek informatikas databas.
+		// Vi tittar om användaren redan finns i bibliotek informatikas databas.
 		if(dbConsistencyService.autentisera(anvandarnamnIn, losenordIn)){
 	
 			// Vi tar reda på användardatan.
@@ -72,6 +72,7 @@ public class LoginServlet extends HttpServlet {
 			ArrayList<String> userInfo = getUserInfoService.getUserInfo(anvandarnamnIn, losenordIn);
 			HttpSession session = request.getSession();
 			
+
 			String personnummer = userInfo.get(0);
 			String anvandarnamn = userInfo.get(1);
 			String losenord = userInfo.get(2);
@@ -82,9 +83,13 @@ public class LoginServlet extends HttpServlet {
 			String postnummer = userInfo.get(7);
 			String telefon = userInfo.get(8);
 			String epost = userInfo.get(9);
-			String roll = userInfo.get(10);
-
-			
+			String roll;
+			if(userInfo.size()<=10){
+				roll = "Låntagare";
+			}
+			else{
+				roll = userInfo.get(10);
+			}
 			
 			// Sätter in användardatan i sessionen.
 			session.setAttribute("sparatAnvandarnamn", anvandarnamn);

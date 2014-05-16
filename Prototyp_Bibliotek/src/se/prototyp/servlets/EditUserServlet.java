@@ -20,47 +20,80 @@ public class EditUserServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession session = req.getSession();
-		String StringId = (String) session.getAttribute("savedUserId");
-		int id = Integer.parseInt(StringId);
-		String userName = (String) req.getParameter("userNameEdit");
-		String firstName = (String) req.getParameter("firstNameEdit");
-		String familyName = (String) req.getParameter("familyNameEdit");
-		String password = (String) req.getParameter("passwordEdit");
-		
+
+		String personnummer = (String) session.getAttribute("sparatPersonnummer");
+		String anvandarnamn = (String) req.getParameter("anvandarnamnEdit");
+		String losenord = (String) req.getParameter("losenordEdit");
+		String fornamn = (String) req.getParameter("fornamnEdit");
+		String efternamn = (String) req.getParameter("efternamnEdit");
+		String gatuadress = (String) req.getParameter("gatuadressEdit");
+		String stad = (String) req.getParameter("stadEdit");
+		String postnummer = (String) req.getParameter("postnummerEdit");
+		String telefon = (String) req.getParameter("telefonEdit");
+		String epost = (String) req.getParameter("epostEdit");
+		String a = (String) session.getAttribute("sparatAnvandarnamn");
 		EditUserService editUserService = new EditUserService();
 		RequestDispatcher dispatcher;
 
 		DBConsistencyService consistency = new DBConsistencyService();
 		
 		// Vi tittar om ifyllt lösenord eller användarnamn redan finns i databasen.
-		if(consistency.checkIfUserNameExists(userName)){
-			dispatcher = req.getRequestDispatcher("main.jsp");
+		if(consistency.checkIfUserNameExists(anvandarnamn) && anvandarnamn.equals(a) == false){
 			req.setAttribute("svar", "Detta användarnamn finns redan i databasen. Välj ett annat.");
-			dispatcher.forward(req, resp);
-			return;
+			if(session.getAttribute("sparadRoll").equals("Låntagare")){
+				dispatcher = req.getRequestDispatcher("lantagare.jsp");
+				dispatcher.forward(req, resp);
+				return;
+			}
+			if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
+				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
+				dispatcher.forward(req, resp);
+				return;
+			}
 		}
 		
 		// Vi försöker uppdatera databasen med de nya användaruppgifterna.
-		if(editUserService.editUser(id, userName, firstName, familyName, password)){
+		if(editUserService.editUser(personnummer, anvandarnamn, losenord, fornamn, efternamn, gatuadress, stad, postnummer, telefon, epost)){
 			// Uppdateringen lyckades.
 			// Vi läser in de nya uppgifterna i sessionen (inloggningen).
-			session.setAttribute("savedUserName", userName);
-			session.setAttribute("savedFirstName", firstName);
-			session.setAttribute("savedFamilyName", familyName);
-			session.setAttribute("savedPassword", password);
-			String newUserName = (String) session.getAttribute("savedUserName");
-			req.setAttribute("svar", "Gratulerar " + newUserName + "! Dina användaruppgifter är nu uppdaterade.");
-			dispatcher = req.getRequestDispatcher("main.jsp");
-			dispatcher.forward(req, resp);
-			return;
+			session.setAttribute("sparatAnvandarnamn", anvandarnamn);
+			session.setAttribute("sparatLosenord", losenord);
+			session.setAttribute("sparatFornamn", fornamn);
+			session.setAttribute("sparatEfternamn", efternamn);
+			session.setAttribute("sparadGatuadress", gatuadress);
+			session.setAttribute("sparadStad", gatuadress);
+			session.setAttribute("sparatPostnummer", postnummer);
+			session.setAttribute("sparadTelefon", telefon);
+			session.setAttribute("sparadEpost", epost);
+			fornamn = (String) session.getAttribute("sparatFornamn");
+			req.setAttribute("svar", "Gratulerar " + fornamn + "! Dina användaruppgifter är nu uppdaterade.");
+			if(session.getAttribute("sparadRoll").equals("Låntagare")){
+				dispatcher = req.getRequestDispatcher("lantagare.jsp");
+				dispatcher.forward(req, resp);
+				return;
+			}
+			if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
+				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
+				dispatcher.forward(req, resp);
+				return;
+			}
+			
 		}
 		else{
 			// Uppdateringen lyckades inte.
-			String newUserName = (String) session.getAttribute("savedUserName");
-			req.setAttribute("svar", "Tyvärr " + newUserName + "! Dina användaruppgifter kunde inte uppdateras.");
-			dispatcher = req.getRequestDispatcher("main.jsp");
-			dispatcher.forward(req, resp);
-			return;
+			fornamn = (String) session.getAttribute("sparatFornamn");
+			req.setAttribute("svar", "Tyvärr " + fornamn + "! Dina användaruppgifter kunde inte uppdateras.");
+			if(session.getAttribute("sparadRoll").equals("Låntagare")){
+				dispatcher = req.getRequestDispatcher("lantagare.jsp");
+				dispatcher.forward(req, resp);
+				return;
+			}
+			if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
+				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
+				dispatcher.forward(req, resp);
+				return;
+			}
+
 		}
 		
 	}

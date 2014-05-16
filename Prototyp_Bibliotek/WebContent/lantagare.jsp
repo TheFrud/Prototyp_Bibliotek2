@@ -29,18 +29,10 @@ String sparatFornamn = (String) session.getAttribute("sparatFornamn");
 String sparatEfternamn = (String) session.getAttribute("sparatEfternamn");
 String sparadGatuadress = (String) session.getAttribute("sparadGatuadress");
 String sparadStad = (String) session.getAttribute("sparadStad");
+String sparatPostnummer = (String) session.getAttribute("sparatPostnummer");
 String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
-
-%>
-
-<% 
-//Tittar om anvÃ¤ndaren redan har en session igÃ¥ng och skickar personen till rÃ¤tt sida beroende pÃ¥ roll.
-if (session.getAttribute("sparadRoll") == "Administratör") {
-    response.sendRedirect("administrator.jsp"); // Not logged in, redirect to login page.
-}
-
 
 %>
 
@@ -68,16 +60,16 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> Sök<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="listaAlltKnapp"><a href="#">Listning av alla verk<span class="badge">
+            <li id="listaAlltKnapp"><a href="#">Listning av alla dokument<span class="badge">
             <%
             GetLiteratureService gts = new GetLiteratureService();
   			int amount = gts.getNumberOfTitles()+1;
             %>
             <%=amount %>
             </span></a></li>
-            <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt verk</a></li>
+            <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
           </ul>
-        </li>
+        
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -88,6 +80,7 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Mina sidor<b class="caret"></b></a>
           <ul class="dropdown-menu">
           	<li id="installningarKnapp"><a href="#">Inställningar</a></li>
+          	 <li id="lamnaInkopsforslagKnapp"><a href="#">Lämna inköpsförslag</a></li>
           	<li id="minaLanKnapp"><a href="#">Mina lån</a></li>
           	<li id="minaReservationerKnapp"><a href="#">Mina reservationer</a></li>
             <li class="divider"></li>
@@ -156,6 +149,42 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
  
 	
 	</p>
+</div>
+
+<form id="lamnaInkopsforslagPanel" action="lamnaInkopsForslag" method="post">
+	<div id="lamnaInkopsforslagTextArea">
+		<textarea name="forslagText" id="textarea" rows = "3" cols = "80" placeholder="Skriv förslag..."></textarea>
+	</div>
+	<br>
+	<input type = "submit" value="Skicka in förslag" class="btn btn-primary btn-sm" />
+</form>
+
+<div id="redigeraAnvandare">
+	<form id = "redigera" action="editUser" method = "post" class="navbar-form navbar-left">
+		Personnummer: <br><input disabled="disabled" type = "text" name = "personnummerEdit" id="personnummerEdit" autocomplete="off" placeholder="<%=sparatPersonnummer%>" value="<%=sparatPersonnummer%>"/>
+		<br>
+		Användarnamn: <br><input disabled="disabled" type = "text" name = "anvandarnamnEdit" id="anvandarnamnEdit" autocomplete="off" placeholder="<%=sparatAnvandarnamn%>..." value="<%=sparatAnvandarnamn%>"/>
+		<br>
+		Lösenord: <br><input disabled="disabled" type = "password" name = "losenordEdit" id="losenordEdit" autocomplete="off" placeholder="..." value="<%=sparatLosenord%>"/>
+		<br>
+		Förnamn: <br><input disabled="disabled" type = "text" name = "fornamnEdit" id="fornamnEdit" autocomplete="off" placeholder="<%=sparatFornamn%>..." value="<%=sparatFornamn%>"/>
+		<br>
+		Efternamn: <br><input disabled="disabled" type = "text" name = "efternamnEdit" id="efternamnEdit" autocomplete="off" placeholder="<%=sparatEfternamn%>..." value="<%=sparatEfternamn%>" />
+		<br>
+		Gatuadress: <br><input disabled="disabled" type = "text" name = "gatuadressEdit" id="gatuadressEdit" autocomplete="off" placeholder="<%=sparadGatuadress%>..." value="<%=sparadGatuadress%>"/>
+		<br>
+		Stad: <br><input disabled="disabled" type = "text" name = "stadEdit" id="stadEdit" autocomplete="off" placeholder="<%=sparadStad%>..." value="<%=sparadStad%>"/>
+		<br>
+		Postnummer: <br><input disabled="disabled" type = "text" name = "postnummerEdit" id="postnummerEdit" autocomplete="off" placeholder="<%=sparatPostnummer%>..." value="<%=sparatPostnummer%>"/>
+		<br>
+		Telefon: <br><input disabled="disabled" type = "tel" name = "telefonEdit" id="telefonEdit" autocomplete="off" placeholder="<%=sparadTelefon%>..." value="<%=sparadTelefon%>"/>
+		<br>
+		E-post: <br><input disabled="disabled" type = "email" name = "epostEdit" id="epostEdit" autocomplete="off" placeholder="<%=sparadEpost%>..." value="<%=sparadEpost%>"/>
+		<br>
+		<br>
+		<input id="edit" type = "button" class="btn btn-primary btn-sm" value="Ändra"/>
+		<input disabled="disabled" id="genomforAndringar" type = "submit" class="btn btn-primary btn-sm" value="Genomför ändringar"/>
+	</form>
 </div>
 
 

@@ -16,6 +16,7 @@ $(document).ready(function() {
 	$("#listaPagaendeLan").hide();
 	$("#redigeraAnvandare").hide();
 	$("#tooltip").hide();
+	$("#lamnaInkopsforslagPanel").hide();
 	
 	// N�r registerknappen klickats p� k�r vi denna funktion..
 	// Denna knapp har getts id="register" i dokumentet login.jsp.
@@ -44,6 +45,7 @@ $(document).ready(function() {
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
+		$("#lamnaInkopsforslagPanel").hide();
 
 	});
 	
@@ -55,6 +57,7 @@ $(document).ready(function() {
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
+		$("#lamnaInkopsforslagPanel").hide();
 	});
 	$("#listaEnskildTitelKnapp").click(function(){
 		$("#listaEnskildTitel").fadeToggle(500);
@@ -64,6 +67,7 @@ $(document).ready(function() {
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
+		$("#lamnaInkopsforslagPanel").hide();
 	});
 	
 	$("#pagaendeLanKnapp").click(function(){
@@ -74,16 +78,7 @@ $(document).ready(function() {
 		$("#listaEnskildTitel").hide();
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
-	});
-	
-	$("#redigeraAnvandareKnapp").click(function(){
-		$("#redigeraAnvandare").fadeToggle(500);
-		$("#katalogisera").hide();
-		$("#listaAllt").hide();
-		$("#searchedTitle").hide();
-		$("#listaEnskildTitel").hide();
-		$("#listaPagaendeLan").hide();
-		$("#valkomsttext").hide();
+		$("#lamnaInkopsforslagPanel").hide();
 	});
 	
 	$("#avregistreraKnapp").click(function(){
@@ -91,12 +86,44 @@ $(document).ready(function() {
 		$("#avregistreraKnapp2").slideToggle();
 
 	});
-	$("li[name^='bokListning']").click(function(){
-		$(this).toggleClass(".list-group-item list-group-item-danger");
+	$("#lamnaInkopsforslagKnapp").click(function(){
+		$("#lamnaInkopsforslagPanel").fadeToggle(500);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#redigeraAnvandare").hide();
+		$("#listaEnskildTitel").hide();
+
 	});
+	$("#installningarKnapp").click(function(){
+		$("#redigeraAnvandare").fadeToggle(500);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+	});
+	
+	$("#edit").click(function(){
+		$("#anvandarnamnEdit").removeAttr("disabled");
+		$("#losenordEdit").removeAttr("disabled");
+		$("#fornamnEdit").removeAttr("disabled");
+		$("#efternamnEdit").removeAttr("disabled");
+		$("#gatuadressEdit").removeAttr("disabled");
+		$("#stadEdit").removeAttr("disabled");
+		$("#postnummerEdit").removeAttr("disabled");
+		$("#telefonEdit").removeAttr("disabled");
+		$("#epostEdit").removeAttr("disabled");
+		$("#genomforAndringar").removeAttr("disabled");
+	});
+	
+	
 	$("#fragetecken").hover(function(){
 		$("#tooltip").fadeToggle(360);
-
 	});
 });
 

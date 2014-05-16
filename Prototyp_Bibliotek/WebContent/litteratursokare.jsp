@@ -3,7 +3,6 @@
     import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
     import="java.text.SimpleDateFormat" import="java.util.Date"
     import="java.util.Collections" import="se.prototyp.services.GetLoansService"
-    import="se.prototyp.database.DBConnect"
     %>
     
 <!DOCTYPE html>
@@ -72,14 +71,14 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> Sök<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="listaAlltKnapp"><a href="#">Listning av alla verk<span class="badge">
+            <li id="listaAlltKnapp"><a href="#">Listning av alla dokument<span class="badge">
             <%
             GetLiteratureService gts = new GetLiteratureService();
   			int amount = gts.getNumberOfTitles()+1;
             %>
             <%=amount %>	
             </span></a></li>
-            <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt verk</a></li>
+            <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
           </ul>
         </li>
       </ul>
