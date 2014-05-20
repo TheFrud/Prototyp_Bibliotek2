@@ -40,7 +40,7 @@ public class DBConsistencyService{
 			try{
 	    		// Returnera 1 om personen är både student och anställd
 				connection2 = getConnection2();
-	    		preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Användarnamn = ? AND Lösenord = ? AND Personnummer IN (SELECT Personnummer FROM Rollinnehav)");
+	    		preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE Användarnamn = ? AND Lösenord = ? AND Personnummer IN (SELECT Personnummer FROM Rollinnehav)");
 	    		preparedStatement.setString(1, anvandarnamn);
 	    		preparedStatement.setString(2, losenord);
 	    		resultSet = preparedStatement.executeQuery();
@@ -65,7 +65,7 @@ public class DBConsistencyService{
 			boolean exists = false;
 			try{
 				connection2 = getConnection2();
-				preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Lösenord = ? AND Personnummer = ?");
+				preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE Lösenord = ? AND Personnummer = ?");
 				preparedStatement.setString(1, losenord);
 				preparedStatement.setString(2, personnummer);			
 				resultSet = preparedStatement.executeQuery();
@@ -90,7 +90,7 @@ public class DBConsistencyService{
 	    	boolean memberExist = false;
 	    	try{
 	    		connection = getConnection();
-	    		preparedStatement = connection.prepareStatement("SELECT * FROM Person WHERE Användarnamn = ? AND Lösenord = ?");
+	    		preparedStatement = connection.prepareStatement("SELECT * FROM person WHERE Användarnamn = ? AND Lösenord = ?");
 	    		preparedStatement.setString(1, anvandarnamn);
 	    		preparedStatement.setString(2, losenord);
 	    		resultSet = preparedStatement.executeQuery();
@@ -113,7 +113,7 @@ public class DBConsistencyService{
 			boolean exists = false;
 			try{
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("SELECT * from Person WHERE Lösenord = ?");
+				preparedStatement = connection.prepareStatement("SELECT * from person WHERE Lösenord = ?");
 				preparedStatement.setString(1, losenord);
 				resultSet = preparedStatement.executeQuery();
 				if(resultSet.next()){
@@ -135,7 +135,7 @@ public class DBConsistencyService{
 			boolean exists = false;
 			try{
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("SELECT * from Person WHERE Användarnamn = ?");
+				preparedStatement = connection.prepareStatement("SELECT * from person WHERE Användarnamn = ?");
 				preparedStatement.setString(1, anvandarnamn);
 				resultSet = preparedStatement.executeQuery();
 				if(resultSet.next()){

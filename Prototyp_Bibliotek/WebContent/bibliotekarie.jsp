@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"
     import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
     import="java.text.SimpleDateFormat" import="java.util.Date"
-    import="java.util.Collections" import="se.prototyp.services.GetLoansService"%>
+    import="java.util.Collections" import="se.prototyp.services.GetLoansService"
+    import="model.*"	import="se.prototyp.services.*;"
+    %>
     
 <!DOCTYPE html>
 <html>	
@@ -29,18 +31,22 @@ String sparatFornamn = (String) session.getAttribute("sparatFornamn");
 String sparatEfternamn = (String) session.getAttribute("sparatEfternamn");
 String sparadGatuadress = (String) session.getAttribute("sparadGatuadress");
 String sparadStad = (String) session.getAttribute("sparadStad");
+String sparatPostnummer = (String) session.getAttribute("sparatPostnummer");
 String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
 
-%>
-
-<% 
-//Tittar om anvÃ¤ndaren redan har en session igÃ¥ng och skickar personen till rÃ¤tt sida beroende pÃ¥ roll.
-if (session.getAttribute("sparadRoll") == "Administratör") {
-    response.sendRedirect("administrator.jsp"); // Not logged in, redirect to login page.
+if(sparadRoll.equals(null)){
+	sparadRoll = "";
 }
 
+if(!sparadRoll.equals("Bibliotekarie")){
+	request.setAttribute("svar", "Du har inte rätt behörighet för att nå denna sida.");
+	RequestDispatcher dispatcher;
+	dispatcher = request.getRequestDispatcher("login.jsp");
+	dispatcher.forward(request, response);
+	return;
+}
 
 %>
 
@@ -77,32 +83,29 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
             </span></a></li>
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
           </ul>
-          
-        </li>
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dokument<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="xxx"><a href="#">xxx</a></li>
-            <li id="xxx2"><a href="#">xxx</a></li>
+            <li id="listaAlltKnapp"><a href="#">Lägg till</a></li>
+			<li id="listaAlltKnapp"><a href="#">Ändra</a></li>
+			<li id="listaAlltKnapp"><a href="#">Ta bort</a></li>
           </ul>
-          
-        </li>
-          <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lager<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li id="xxx3"><a href="#">xxx</a></li>
-            <li id="xxx4"><a href="#">xxx</a></li>
-          </ul>
-          
-        </li>
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lån<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="xxx5"><a href="#">xxx</a></li>
-            <li id="xxx6"><a href="#">xxx</a></li>
+            <li id="listaAlltKnapp"><a href="#">Utlåning</a></li>
+			<li id="listaAlltKnapp"><a href="#">Pågående lån</a></li>
+			<li id="listaAlltKnapp"><a href="#">Reservationer</a></li>
+			<li id="listaAlltKnapp"><a href="#">Förseningar</a></li>
           </ul>
-          
-        </li>
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inköp<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li id="listaAlltKnapp"><a href="#">Lager</a></li>
+			<li id="listaAlltKnapp"><a href="#">Statistik</a></li>
+			<li id="listaAlltKnapp"><a href="#">Förslag</a></li>
+			<li id="listaAlltKnapp"><a href="#">Leverantörer</a></li>
+          </ul>
         
       </ul>
       
@@ -113,7 +116,8 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Mina sidor<b class="caret"></b></a>
           <ul class="dropdown-menu">
-                    	<li id="installningarKnapp"><a href="#">Inställningar</a></li>
+          	<li id="installningarKnapp"><a href="#">Inställningar</a></li>
+          	 <li id="lamnaInkopsforslagKnapp"><a href="#">Lämna inköpsförslag</a></li>
           	<li id="minaLanKnapp"><a href="#">Mina lån</a></li>
           	<li id="minaReservationerKnapp"><a href="#">Mina reservationer</a></li>
             <li class="divider"></li>
@@ -138,16 +142,52 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 	</button>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getTitles();
+	ArrayList<Dokument> list = getLiteratureService.getTitles();
 	int lineCount = 0;
-	for(String book: list){
+	for(Dokument book: list){
 		lineCount++;
 	%>
 	<!--
 
 	-->
   <ul class="list-group">
-	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"> Bok: <%=book %> </li>
+	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel() %> 
+	<p>
+	<ul class="list.group">
+	
+	<%
+	ArrayList<Lager> lagerLista = getLiteratureService.hamtaLager(book.getIsbn()); 
+	for(Lager lager: lagerLista){
+	%>
+	<%if(lager.getTillganglig() == 1){
+		%> <li class="list-group-item list-group-item-success">
+	<% 
+	}
+	%>
+	<%if(lager.getTillganglig() == 0){
+		%> <li class="list-group-item list-group-item-danger">
+	<% 
+	}
+	%>
+	
+	
+	<%=lager.toString() %>
+	<br>
+	<%if(lager.getTillganglig() == 1){
+		%>Reservera <span class="glyphicon glyphicon-share-alt"></span> <input type="checkbox">
+	<% 
+	}
+	%>
+	<%if(lager.getTillganglig() == 0){
+		%>Inte tillgänglig. <span class="glyphicon glyphicon-remove"></span>
+	<% 
+	}
+	%>
+	<br>
+	<% }%>
+	</li>
+	</ul>
+	</li>
 	<%} %>
 	</ul>
 	</form>
@@ -171,10 +211,10 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
   <div class="media-body">
     <h4 class="media-heading">Välkommen <%=sparatFornamn%> <%=sparatEfternamn%>!</h4>
     <br>
+    <h4 class="media-heading">Nyheter:</h4>
     <ul>
-    <li>[Se lån som har gått ut?]</li>
-    <li>[Se lån som håller på att gå ut?]</li>
-    <li>[Nyinköpta dokument?]</li>
+    <li>Kanske nyheter vad gäller policys.. osv</li>
+    <li>[LISTNING FRÅN DATABAS.. kanske typ 5,6 verk]</li>
     </ul>
   </div>
 </div>
@@ -182,6 +222,76 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
  
 	
 	</p>
+</div>
+
+<form id="lamnaInkopsforslagPanel" action="lamnaInkopsForslag" method="post">
+	<div id="lamnaInkopsforslagTextArea">
+		<textarea name="forslagText" id="textarea" rows = "3" cols = "80" placeholder="Skriv förslag..."></textarea>
+	</div>
+	<br>
+	<input type = "submit" value="Skicka in förslag" class="btn btn-primary btn-sm" />
+</form>
+
+<div id="redigeraAnvandare">
+	<form id = "redigera" action="editUser" method = "post" class="navbar-form navbar-left">
+		Personnummer: <br><input disabled="disabled" type = "text" name = "personnummerEdit" id="personnummerEdit" autocomplete="off" placeholder="<%=sparatPersonnummer%>" value="<%=sparatPersonnummer%>"/>
+		<br>
+		Användarnamn: <br><input disabled="disabled" type = "text" name = "anvandarnamnEdit" id="anvandarnamnEdit" autocomplete="off" placeholder="<%=sparatAnvandarnamn%>..." value="<%=sparatAnvandarnamn%>"/>
+		<br>
+		Lösenord: <br><input disabled="disabled" type = "password" name = "losenordEdit" id="losenordEdit" autocomplete="off" placeholder="..." value="<%=sparatLosenord%>"/>
+		<br>
+		Förnamn: <br><input disabled="disabled" type = "text" name = "fornamnEdit" id="fornamnEdit" autocomplete="off" placeholder="<%=sparatFornamn%>..." value="<%=sparatFornamn%>"/>
+		<br>
+		Efternamn: <br><input disabled="disabled" type = "text" name = "efternamnEdit" id="efternamnEdit" autocomplete="off" placeholder="<%=sparatEfternamn%>..." value="<%=sparatEfternamn%>" />
+		<br>
+		Gatuadress: <br><input disabled="disabled" type = "text" name = "gatuadressEdit" id="gatuadressEdit" autocomplete="off" placeholder="<%=sparadGatuadress%>..." value="<%=sparadGatuadress%>"/>
+		<br>
+		Stad: <br><input disabled="disabled" type = "text" name = "stadEdit" id="stadEdit" autocomplete="off" placeholder="<%=sparadStad%>..." value="<%=sparadStad%>"/>
+		<br>
+		Postnummer: <br><input disabled="disabled" type = "text" name = "postnummerEdit" id="postnummerEdit" autocomplete="off" placeholder="<%=sparatPostnummer%>..." value="<%=sparatPostnummer%>"/>
+		<br>
+		Telefon: <br><input disabled="disabled" type = "tel" name = "telefonEdit" id="telefonEdit" autocomplete="off" placeholder="<%=sparadTelefon%>..." value="<%=sparadTelefon%>"/>
+		<br>
+		E-post: <br><input disabled="disabled" type = "email" name = "epostEdit" id="epostEdit" autocomplete="off" placeholder="<%=sparadEpost%>..." value="<%=sparadEpost%>"/>
+		<br>
+		<br>
+		<input id="edit" type = "button" class="btn btn-primary btn-sm" value="Ändra"/>
+		<input disabled="disabled" id="genomforAndringar" type = "submit" class="btn btn-primary btn-sm" value="Genomför ändringar"/>
+	</form>
+</div>
+
+<div id="minaLan">
+	<%
+	GetLoansService getLoansService = new GetLoansService();
+	ArrayList<Lan> lanLista = getLoansService.getLoans(sparatPersonnummer);
+	if(!lanLista.isEmpty()){
+		for(Lan lan: lanLista){
+	%>
+	<ul class="list-group">
+	<li class="list-group-item list-group-item-info"><%=lan.toString() %></li>
+	<%
+		} 
+	}
+	%>
+	</ul>
+
+</div>
+
+<div id="minaReservationer">
+	<%
+	HamtaReservation hamtaReservation = new HamtaReservation();
+	ArrayList<Reservation> reservationLista = hamtaReservation.hamtaReservationer(sparatPersonnummer);
+	if(!reservationLista.isEmpty()){
+		for(Reservation reservation: reservationLista){
+	%>
+	<ul class="list-group">
+	<li class="list-group-item list-group-item-info"><%=reservation.toString()%> </li>
+	<%
+		} 
+	}
+	%>
+	</ul>
+
 </div>
 
 

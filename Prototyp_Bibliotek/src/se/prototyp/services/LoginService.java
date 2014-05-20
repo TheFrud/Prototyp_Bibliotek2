@@ -44,7 +44,7 @@ public class LoginService{
 		try{
 			// Hämtar data om personen från persondatabasen.
 			connection2 = getConnection2();
-			preparedStatement = connection2.prepareStatement("SELECT * FROM Person WHERE Användarnamn = ? AND Lösenord = ?");
+			preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE Användarnamn = ? AND Lösenord = ?");
 			preparedStatement.setString(1, anvandarnamnIn);
 			preparedStatement.setString(2, losenordIn);
 			resultSet = preparedStatement.executeQuery();
@@ -76,7 +76,7 @@ public class LoginService{
 			String epost = dataFranPersondatabas.get(9);
 			// Lägger in datan i bibliotek informatikas databas
 			connection = getConnection();
-			preparedStatement = connection.prepareStatement("INSERT INTO Person (Personnummer, Användarnamn, Lösenord, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO person (Personnummer, Användarnamn, Lösenord, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
 			preparedStatement.setString(1, personnummer);
 			preparedStatement.setString(2, anvandarnamn);
 			preparedStatement.setString(3, losenord);

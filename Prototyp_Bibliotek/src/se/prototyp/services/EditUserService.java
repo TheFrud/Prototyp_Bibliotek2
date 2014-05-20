@@ -33,7 +33,7 @@ public class EditUserService{
 				boolean edited = false;
 				try{
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("UPDATE Person SET Användarnamn = ?, Lösenord = ?, Förnamn = ?, Efternamn = ?, Gatuadress = ?, Stad = ?, Postnummer = ?, Telefon = ?, Epost = ? WHERE Personnummer = ?");
+					preparedStatement = connection.prepareStatement("UPDATE person SET Användarnamn = ?, Lösenord = ?, Förnamn = ?, Efternamn = ?, Gatuadress = ?, Stad = ?, Postnummer = ?, Telefon = ?, Epost = ? WHERE Personnummer = ?");
 					preparedStatement.setString(1, anvandarnamn);
 					preparedStatement.setString(2, losenord);
 					preparedStatement.setString(3, fornamn);

@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import model.Lan;
 import se.prototyp.services.GetLoansService;
 
 @WebServlet("/getLoans")
@@ -20,12 +22,23 @@ public class GetLoansServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		GetLoansService getLoans = new GetLoansService();
-		ArrayList<String> loans = getLoans.getLoans();
+		HttpSession session = req.getSession();
+		String personnummer= (String) session.getAttribute("sparatPersonnummer");
+		
+		ArrayList<Lan> loans = getLoans.getLoans(personnummer);
 		
 		RequestDispatcher dispatcher;
 	
-		dispatcher = req.getRequestDispatcher("main.jsp");
-		dispatcher.forward(req, resp);
-		return;
+		if(session.getAttribute("sparadRoll").equals("Låntagare")){
+			dispatcher = req.getRequestDispatcher("lantagare.jsp");
+			dispatcher.forward(req, resp);
+			return;
+		}
+		if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
+			dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
+			dispatcher.forward(req, resp);
+			return;
+		}
+		
 	}
 }

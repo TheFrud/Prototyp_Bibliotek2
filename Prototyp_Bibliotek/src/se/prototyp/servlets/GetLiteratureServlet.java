@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Dokument;
 import se.prototyp.services.GetLiteratureService;
 
 @WebServlet("/getLiterature")
@@ -19,7 +20,7 @@ public class GetLiteratureServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		GetLiteratureService getLiteratureService = new GetLiteratureService();
-		ArrayList<String> literature = getLiteratureService.getTitles();
+		ArrayList<Dokument> literature = getLiteratureService.getTitles();
 		RequestDispatcher dispatcher;
 		
 		dispatcher = req.getRequestDispatcher("main.jsp");
@@ -33,7 +34,7 @@ public class GetLiteratureServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String title = req.getParameter("soktTitel");
 		GetLiteratureService getLiteratureService = new GetLiteratureService();
-		ArrayList<String> literature = getLiteratureService.getTitles(title);
+		ArrayList<Dokument> literature = getLiteratureService.getTitles(title);
 		RequestDispatcher dispatcher;
 
 		dispatcher = req.getRequestDispatcher("searchedTitle.jsp");

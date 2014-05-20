@@ -32,7 +32,7 @@ public class AddLiteratureService{
 			  int change = 0;
 			  try {
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("INSERT INTO litterature (Titel) VALUES (?)");
+				preparedStatement = connection.prepareStatement("INSERT INTO dokument (Titel) VALUES (?)");
 				preparedStatement.setString(1, title);
 				change = preparedStatement.executeUpdate();
 				return change;

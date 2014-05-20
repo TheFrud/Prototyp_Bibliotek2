@@ -17,6 +17,8 @@ $(document).ready(function() {
 	$("#redigeraAnvandare").hide();
 	$("#tooltip").hide();
 	$("#lamnaInkopsforslagPanel").hide();
+	$("#minaLan").hide();
+	$("#minaReservationer").hide();
 	
 	// N�r registerknappen klickats p� k�r vi denna funktion..
 	// Denna knapp har getts id="register" i dokumentet login.jsp.
@@ -46,6 +48,8 @@ $(document).ready(function() {
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
 		$("#lamnaInkopsforslagPanel").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
 
 	});
 	
@@ -58,6 +62,8 @@ $(document).ready(function() {
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
 		$("#lamnaInkopsforslagPanel").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
 	});
 	$("#listaEnskildTitelKnapp").click(function(){
 		$("#listaEnskildTitel").fadeToggle(500);
@@ -68,6 +74,8 @@ $(document).ready(function() {
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
 		$("#lamnaInkopsforslagPanel").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
 	});
 	
 	$("#pagaendeLanKnapp").click(function(){
@@ -79,6 +87,8 @@ $(document).ready(function() {
 		$("#redigeraAnvandare").hide();
 		$("#valkomsttext").hide();
 		$("#lamnaInkopsforslagPanel").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
 	});
 	
 	$("#avregistreraKnapp").click(function(){
@@ -95,6 +105,8 @@ $(document).ready(function() {
 		$("#listaPagaendeLan").hide();
 		$("#redigeraAnvandare").hide();
 		$("#listaEnskildTitel").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
 
 	});
 	$("#installningarKnapp").click(function(){
@@ -106,6 +118,8 @@ $(document).ready(function() {
 		$("#listaPagaendeLan").hide();
 		$("#listaEnskildTitel").hide();
 		$("#lamnaInkopsforslagPanel").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
 	});
 	
 	$("#edit").click(function(){
@@ -119,6 +133,33 @@ $(document).ready(function() {
 		$("#telefonEdit").removeAttr("disabled");
 		$("#epostEdit").removeAttr("disabled");
 		$("#genomforAndringar").removeAttr("disabled");
+		$("#minaReservationer").hide();
+	});
+	
+	$("#minaLanKnapp").click(function(){
+		$("#minaLan").fadeToggle(500);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+		$("#redigeraAnvandare").hide();
+		$("#minaReservationer").hide();
+	});
+	
+	$("#minaReservationerKnapp").click(function(){
+		$("#minaReservationer").fadeToggle(500);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+		$("#redigeraAnvandare").hide();
+		$("#minaLan").hide();
 	});
 	
 	

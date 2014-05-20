@@ -3,6 +3,7 @@
     import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
     import="java.text.SimpleDateFormat" import="java.util.Date"
     import="java.util.Collections" import="se.prototyp.services.GetLoansService"
+    import="model.*;"
     %>
     
 <!DOCTYPE html>
@@ -108,16 +109,16 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 	<form>
 	</button>
 	<%
-	ArrayList<String> list = gts.getTitles();
+	ArrayList<Dokument> list = gts.getTitles();
 	int lineCount = 0;
-	for(String book: list){
+	for(Dokument book: list){
 		lineCount++;
 	%>
 	<!--
 
 	-->
   <ul class="list-group">
-	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"> Bok: <%=book %> </li>
+	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"> Bok: <%=book.getTitel() %> </li>
 	<%} %>
 	</ul>
 	</form>

@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"
     import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
     import="java.text.SimpleDateFormat" import="java.util.Date"
-    import="java.util.Collections" import="se.prototyp.services.GetLoansService"%>
+    import="java.util.Collections" import="se.prototyp.services.GetLoansService"
+    import="model.*"	import="se.prototyp.services.*;"
+    %>
     
 <!DOCTYPE html>
 <html>	
@@ -33,6 +35,18 @@ String sparatPostnummer = (String) session.getAttribute("sparatPostnummer");
 String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
+
+if(sparadRoll.equals(null)){
+	sparadRoll = "";
+}
+
+if(!sparadRoll.equals("Låntagare")){
+	request.setAttribute("svar", "Du har inte rätt behörighet för att nå denna sida.");
+	RequestDispatcher dispatcher;
+	dispatcher = request.getRequestDispatcher("login.jsp");
+	dispatcher.forward(request, response);
+	return;
+}
 
 %>
 
@@ -105,16 +119,52 @@ String sparadRoll = (String) session.getAttribute("sparadRoll");
 	</button>
 	<%
 	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<String> list = getLiteratureService.getTitles();
+	ArrayList<Dokument> list = getLiteratureService.getTitles();
 	int lineCount = 0;
-	for(String book: list){
+	for(Dokument book: list){
 		lineCount++;
 	%>
 	<!--
 
 	-->
   <ul class="list-group">
-	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"> Bok: <%=book %> </li>
+	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel() %> 
+	<p>
+	<ul class="list.group">
+	
+	<%
+	ArrayList<Lager> lagerLista = getLiteratureService.hamtaLager(book.getIsbn()); 
+	for(Lager lager: lagerLista){
+	%>
+	<%if(lager.getTillganglig() == 1){
+		%> <li class="list-group-item list-group-item-success">
+	<% 
+	}
+	%>
+	<%if(lager.getTillganglig() == 0){
+		%> <li class="list-group-item list-group-item-danger">
+	<% 
+	}
+	%>
+	
+	
+	<%=lager.toString() %>
+	<br>
+	<%if(lager.getTillganglig() == 1){
+		%>Reservera <span class="glyphicon glyphicon-share-alt"></span> <input type="checkbox">
+	<% 
+	}
+	%>
+	<%if(lager.getTillganglig() == 0){
+		%>Inte tillgänglig. <span class="glyphicon glyphicon-remove"></span>
+	<% 
+	}
+	%>
+	<br>
+	<% }%>
+	</li>
+	</ul>
+	</li>
 	<%} %>
 	</ul>
 	</form>
@@ -140,8 +190,16 @@ String sparadRoll = (String) session.getAttribute("sparadRoll");
     <br>
     <h4 class="media-heading">Nyheter:</h4>
     <ul>
-    <li>Kanske nyheter vad gäller policys.. osv</li>
-    <li>[LISTNING FRÅN DATABAS.. kanske typ 5,6 verk]</li>
+    <li>Senast tillagda dokument:</li>
+    	<ul>
+    		<%
+    		ArrayList<Lager> listaSenasteDokument = gts.hamtaSenasteLagerdokument();
+    		for(int i = 0; i<5; i++){
+    		%>
+    		<li><%=listaSenasteDokument.get(i).toString()%></li>
+    		<%}%>
+    		
+    	</ul>
     </ul>
   </div>
 </div>
@@ -185,6 +243,40 @@ String sparadRoll = (String) session.getAttribute("sparadRoll");
 		<input id="edit" type = "button" class="btn btn-primary btn-sm" value="Ändra"/>
 		<input disabled="disabled" id="genomforAndringar" type = "submit" class="btn btn-primary btn-sm" value="Genomför ändringar"/>
 	</form>
+</div>
+
+<div id="minaLan">
+	<%
+	GetLoansService getLoansService = new GetLoansService();
+	ArrayList<Lan> lanLista = getLoansService.getLoans(sparatPersonnummer);
+	if(!lanLista.isEmpty()){
+		for(Lan lan: lanLista){
+	%>
+	<ul class="list-group">
+	<li class="list-group-item list-group-item-info"><%=lan.toString() %></li>
+	<%
+		} 
+	}
+	%>
+	</ul>
+
+</div>
+
+<div id="minaReservationer">
+	<%
+	HamtaReservation hamtaReservation = new HamtaReservation();
+	ArrayList<Reservation> reservationLista = hamtaReservation.hamtaReservationer(sparatPersonnummer);
+	if(!reservationLista.isEmpty()){
+		for(Reservation reservation: reservationLista){
+	%>
+	<ul class="list-group">
+	<li class="list-group-item list-group-item-info"><%=reservation.toString()%> </li>
+	<%
+		} 
+	}
+	%>
+	</ul>
+
 </div>
 
 
