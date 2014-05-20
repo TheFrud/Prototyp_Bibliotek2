@@ -79,7 +79,9 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
             %>
             <%=amount %>	
             </span></a></li>
+            <!--  
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
+            -->
           </ul>
         </li>
       </ul>
@@ -109,7 +111,8 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 	<form>
 	</button>
 	<%
-	ArrayList<Dokument> list = gts.getTitles();
+	GetLiteratureService getLiteratureService = new GetLiteratureService();
+	ArrayList<Dokument> list = getLiteratureService.getTitles();
 	int lineCount = 0;
 	for(Dokument book: list){
 		lineCount++;
@@ -118,7 +121,43 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 
 	-->
   <ul class="list-group">
-	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"> Bok: <%=book.getTitel() %> </li>
+	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel()%> 
+	<p>
+	<ul class="list.group">
+	
+	<%
+	ArrayList<Lager> lagerLista = getLiteratureService.hamtaLager(book.getIsbn()); 
+	for(Lager lager: lagerLista){
+	%>
+	<%if(lager.getTillganglig() == 1){
+		%> <li class="list-group-item list-group-item-success">
+	<% 
+	}
+	%>
+	<%if(lager.getTillganglig() == 0){
+		%> <li class="list-group-item list-group-item-danger">
+	<% 
+	}
+	%>
+	
+	
+	<%=lager.toString() %>
+	<br>
+	<%if(lager.getTillganglig() == 1){
+		%>Tillgänglig.
+	<% 
+	}
+	%>
+	<%if(lager.getTillganglig() == 0){
+		%>Inte tillgänglig. <span class="glyphicon glyphicon-remove"></span>
+	<% 
+	}
+	%>
+	<br>
+	<% }%>
+	</li>
+	</ul>
+	</li>
 	<%} %>
 	</ul>
 	</form>

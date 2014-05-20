@@ -163,6 +163,7 @@ $(document).ready(function() {
 	});
 	
 	
+	
 	$("#fragetecken").hover(function(){
 		$("#tooltip").fadeToggle(360);
 	});

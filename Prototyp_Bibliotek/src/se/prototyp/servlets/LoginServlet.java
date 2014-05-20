@@ -140,9 +140,9 @@ public class LoginServlet extends HttpServlet {
 			String postnummer = userInfo.get(7);
 			String telefon = userInfo.get(8);
 			String epost = userInfo.get(9);
-			/*
-			String roll = userInfo.get(10);
-			*/
+			
+			String roll = "Låntagare";
+			
 			
 			// Sätter in användardatan i sessionen.
 			session.setAttribute("sparatAnvandarnamn", anvandarnamn);
@@ -155,13 +155,13 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("sparatPostnummer", postnummer);
 			session.setAttribute("sparadTelefon", telefon);
 			session.setAttribute("sparadEpost", epost);
-			/*
+			
 			session.setAttribute("sparadRoll", roll);
-			*/
+			
 			
 			// Loggas in.
 			request.setAttribute("svar", "Välkommen " + fornamn + " " + efternamn + "! Du är nu registrerad på Bibliotek Informatika.");
-			dispatcher = request.getRequestDispatcher("main.jsp");
+			dispatcher = request.getRequestDispatcher("lantagare.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}

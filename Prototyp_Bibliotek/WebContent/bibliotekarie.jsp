@@ -81,30 +81,32 @@ if(!sparadRoll.equals("Bibliotekarie")){
             %>
             <%=amount %>
             </span></a></li>
+            <!--  
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
+            -->
           </ul>
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dokument<b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Dokument<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="listaAlltKnapp"><a href="#">Lägg till</a></li>
-			<li id="listaAlltKnapp"><a href="#">Ändra</a></li>
-			<li id="listaAlltKnapp"><a href="#">Ta bort</a></li>
+            <li id="laggTillDokumentKnapp"><a href="#">Lägg till</a></li>
+			<li id="andraDokumentKnapp"><a href="#">Ändra</a></li>
+			<li id="taBortDokumentKnapp"><a href="#">Ta bort</a></li>
           </ul>
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lån<b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-retweet"></span> Lån<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="listaAlltKnapp"><a href="#">Utlåning</a></li>
-			<li id="listaAlltKnapp"><a href="#">Pågående lån</a></li>
-			<li id="listaAlltKnapp"><a href="#">Reservationer</a></li>
-			<li id="listaAlltKnapp"><a href="#">Förseningar</a></li>
+            <li id="utlaningKnapp"><a href="#">Utlåning</a></li>
+			<li id="pagaendeLanKnapp"><a href="#">Pågående lån</a></li>
+			<li id="reservationerKnapp"><a href="#">Reservationer</a></li>
+			<li id="forseningarKnapp"><a href="#">Förseningar</a></li>
           </ul>
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inköp<b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span> Inköp<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li id="listaAlltKnapp"><a href="#">Lager</a></li>
-			<li id="listaAlltKnapp"><a href="#">Statistik</a></li>
-			<li id="listaAlltKnapp"><a href="#">Förslag</a></li>
-			<li id="listaAlltKnapp"><a href="#">Leverantörer</a></li>
+            <li id="lagerKnapp"><a href="#">Lager</a></li>
+			<li id="statistikKnapp"><a href="#">Statistik</a></li>
+			<li id="forslagKnapp"><a href="#">Förslag</a></li>
+			<li id="leverantorerKnapp"><a href="#">Leverantörer</a></li>
           </ul>
         
       </ul>
@@ -151,7 +153,7 @@ if(!sparadRoll.equals("Bibliotekarie")){
 
 	-->
   <ul class="list-group">
-	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel() %> 
+	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel()%> 
 	<p>
 	<ul class="list.group">
 	
@@ -206,15 +208,23 @@ if(!sparadRoll.equals("Bibliotekarie")){
 <div id="valkomsttext">
 <div class="media">
   <a class="pull-left" href="#">
-    <span class="glyphicon glyphicon-share-alt"></span>
+    <span class="glyphicon glyphicon-heart"></span>
   </a>
   <div class="media-body">
     <h4 class="media-heading">Välkommen <%=sparatFornamn%> <%=sparatEfternamn%>!</h4>
     <br>
     <h4 class="media-heading">Nyheter:</h4>
     <ul>
-    <li>Kanske nyheter vad gäller policys.. osv</li>
-    <li>[LISTNING FRÅN DATABAS.. kanske typ 5,6 verk]</li>
+    <li>Senast tillagda dokument:</li>
+    	<ul>
+    		<%
+    		ArrayList<Lager> listaSenasteDokument = gts.hamtaSenasteLagerdokument();
+    		for(int i = 0; i<5; i++){
+    		%>
+    		<li><%=listaSenasteDokument.get(i).toString()%></li>
+    		<%}%>
+    		
+    	</ul>
     </ul>
   </div>
 </div>

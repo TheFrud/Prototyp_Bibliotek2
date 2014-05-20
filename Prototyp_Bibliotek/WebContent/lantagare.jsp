@@ -36,6 +36,7 @@ String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
 
+
 if(sparadRoll.equals(null)){
 	sparadRoll = "";
 }
@@ -81,7 +82,9 @@ if(!sparadRoll.equals("Låntagare")){
             %>
             <%=amount %>
             </span></a></li>
+            <!--  
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
+            -->
           </ul>
         
       </ul>
@@ -128,7 +131,7 @@ if(!sparadRoll.equals("Låntagare")){
 
 	-->
   <ul class="list-group">
-	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel() %> 
+	<li class="list-group-item list-group-item-info" name="bokListning<%=lineCount%>"><input type="checkbox" class="taBortInput"><%=book.getTitel()%> 
 	<p>
 	<ul class="list.group">
 	
@@ -183,7 +186,7 @@ if(!sparadRoll.equals("Låntagare")){
 <div id="valkomsttext">
 <div class="media">
   <a class="pull-left" href="#">
-    <span class="glyphicon glyphicon-share-alt"></span>
+    <span class="glyphicon glyphicon-heart"></span>
   </a>
   <div class="media-body">
     <h4 class="media-heading">Välkommen <%=sparatFornamn%> <%=sparatEfternamn%>!</h4>
