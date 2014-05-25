@@ -1,4 +1,4 @@
-package se.prototyp.servlets;
+package kontroll;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import se.prototyp.services.DBConsistencyService;
-import se.prototyp.services.GetUserInfoService;
-import se.prototyp.services.LoginService;
+import funktion.HamtaAnvandare;
+import funktion.Inloggning;
+import funktion.Konsistenskontroll;
 
 /**
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+public class KontrollerInloggning extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// Gästinlogging
@@ -52,8 +52,8 @@ public class LoginServlet extends HttpServlet {
 		
 		String anvandarnamnIn = request.getParameter("anvandarnamnInloggning");
 		String losenordIn = request.getParameter("losenordInloggning");
-		LoginService loginService = new LoginService();
-		DBConsistencyService dbConsistencyService = new DBConsistencyService();
+		Inloggning inloggning = new Inloggning();
+		Konsistenskontroll dbConsistencyService = new Konsistenskontroll();
 		RequestDispatcher dispatcher;
 		
 		// Tittar så att användaren fyllt i alla fält.
@@ -68,8 +68,8 @@ public class LoginServlet extends HttpServlet {
 		if(dbConsistencyService.autentisera(anvandarnamnIn, losenordIn)){
 	
 			// Vi tar reda på användardatan.
-			GetUserInfoService getUserInfoService = new GetUserInfoService();
-			ArrayList<String> userInfo = getUserInfoService.getUserInfo(anvandarnamnIn, losenordIn);
+			HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
+			ArrayList<String> userInfo = hamtaAnvandare.hamtaAnvandarInfo(anvandarnamnIn, losenordIn);
 			HttpSession session = request.getSession();
 			
 
@@ -123,11 +123,11 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		// Om användaren inte redan finns i bibliotek informatikas databas så tittar vi om vi kan skapa användaren ifrån persondatabasen.
-		if(loginService.addUserFromExistingDB(anvandarnamnIn, losenordIn)){
+		if(inloggning.laggTillAnvandareFranSkolDB(anvandarnamnIn, losenordIn)){
 			
 			// Vi tar reda på användardatan.
-			GetUserInfoService getUserInfoService = new GetUserInfoService();
-			ArrayList<String> userInfo = getUserInfoService.getUserInfo(anvandarnamnIn, losenordIn);
+			HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
+			ArrayList<String> userInfo = hamtaAnvandare.hamtaAnvandarInfo(anvandarnamnIn, losenordIn);
 			HttpSession session = request.getSession();
 			
 			String personnummer = userInfo.get(0);

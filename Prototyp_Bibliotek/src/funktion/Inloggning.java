@@ -1,4 +1,4 @@
-package se.prototyp.services;
+package funktion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class LoginService{
+public class Inloggning{
 	private DataSource ds;
 	private DataSource ds2;
 	Connection connection;
@@ -21,7 +21,7 @@ public class LoginService{
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     
-	public LoginService(){
+	public Inloggning(){
 		  try {
 		    // Look up the JNDI data source only once at init time
 		    Context ctx = new InitialContext();
@@ -39,7 +39,7 @@ public class LoginService{
 		    return ds2.getConnection();
 	 }
 
-	public boolean addUserFromExistingDB(String anvandarnamnIn, String losenordIn){
+	public boolean laggTillAnvandareFranSkolDB(String anvandarnamnIn, String losenordIn){
 		ArrayList<String> dataFranPersondatabas = new ArrayList<String>();
 		try{
 			// Hämtar data om personen från persondatabasen.

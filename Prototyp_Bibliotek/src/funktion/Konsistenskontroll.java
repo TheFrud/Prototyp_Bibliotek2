@@ -1,4 +1,4 @@
-package se.prototyp.services;
+package funktion;
 
 import javax.naming.*;
 import javax.sql.DataSource;
@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DBConsistencyService{
+public class Konsistenskontroll{
 
 	private DataSource ds;
 	private DataSource ds2;
@@ -16,7 +16,7 @@ public class DBConsistencyService{
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 		
-    public DBConsistencyService(){
+    public Konsistenskontroll(){
 	    try {
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
@@ -36,7 +36,7 @@ public class DBConsistencyService{
 		  }
 		  
 	    // Kollar om personen finns i persondatabasen på skolan
-		public boolean checkUserExistanceAndRole(String anvandarnamn, String losenord){
+		public boolean hittaAnvandareOchRollSkolDB(String anvandarnamn, String losenord){
 			try{
 	    		// Returnera 1 om personen är både student och anställd
 				connection2 = getConnection2();
@@ -61,7 +61,7 @@ public class DBConsistencyService{
 	    }
 		
 		// Kollar om det lösenord personen skrivit in stämmer överrens med det redan lagrade i persondatabasen
-		public boolean checkIfUserExistsInSchoolDB(String personnummer, String losenord){
+		public boolean hittaAnvandareSkolDB(String personnummer, String losenord){
 			boolean exists = false;
 			try{
 				connection2 = getConnection2();
@@ -109,7 +109,7 @@ public class DBConsistencyService{
 			      }
 
 	    }
-		public boolean checkIfPasswordExists(String losenord){
+		public boolean hittaLosenord(String losenord){
 			boolean exists = false;
 			try{
 				connection = getConnection();
@@ -131,12 +131,34 @@ public class DBConsistencyService{
 			      }
 
 		}
-		public boolean checkIfUserNameExists(String anvandarnamn){
+		public boolean hittaAnvandarnamn(String anvandarnamn){
 			boolean exists = false;
 			try{
 				connection = getConnection();
 				preparedStatement = connection.prepareStatement("SELECT * from person WHERE Användarnamn = ?");
 				preparedStatement.setString(1, anvandarnamn);
+				resultSet = preparedStatement.executeQuery();
+				if(resultSet.next()){
+					exists = true;
+				}
+				return exists;
+			}
+			catch(SQLException sqle){
+				System.out.println(sqle.getMessage());
+				return exists;
+			}
+	        finally {
+			      if (connection != null) 
+			        try {connection.close();} catch (SQLException e) {}
+			      }
+
+		}
+		public boolean hittaDokument(String isbn){
+			boolean exists = false;
+			try{
+				connection = getConnection();
+				preparedStatement = connection.prepareStatement("SELECT * from dokument WHERE ISBN = ?");
+				preparedStatement.setString(1, isbn);
 				resultSet = preparedStatement.executeQuery();
 				if(resultSet.next()){
 					exists = true;

@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="UTF-8"
-    import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
+    import="java.util.ArrayList" import="funktion.*"
     import="java.text.SimpleDateFormat" import="java.util.Date"
-    import="java.util.Collections" import="se.prototyp.services.GetLoansService"
-    import="model.*;"
+    import="java.util.Collections" import="modell.*;"
     %>
     
 <!DOCTYPE html>
@@ -23,7 +22,7 @@
 <body>
 
 <%
-// Vi spar ner användarinformationen från sessionen i variabler som vi kan använda på sidan.
+	// Vi spar ner användarinformationen från sessionen i variabler som vi kan använda på sidan.
 String sparatAnvandarnamn = (String) session.getAttribute("sparatAnvandarnamn");
 String sparatLosenord = (String) session.getAttribute("sparatLosenord");
 String sparatPersonnummer = (String) session.getAttribute("sparatPersonnummer");
@@ -34,17 +33,13 @@ String sparadStad = (String) session.getAttribute("sparadStad");
 String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
-
-
 %>
 
-<% 
-//Tittar om anvÃ¤ndaren redan har en session igÃ¥ng och skickar personen till rÃ¤tt sida beroende pÃ¥ roll.
+<%
+	//Tittar om anvÃ¤ndaren redan har en session igÃ¥ng och skickar personen till rÃ¤tt sida beroende pÃ¥ roll.
 if (session.getAttribute("sparadRoll") == "Administratör") {
     response.sendRedirect("administrator.jsp"); // Not logged in, redirect to login page.
 }
-
-
 %>
 
 
@@ -74,10 +69,10 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
           <ul class="dropdown-menu">
             <li id="listaAlltKnapp"><a href="#">Listning av alla dokument<span class="badge">
             <%
-            GetLiteratureService gts = new GetLiteratureService();
-  			int amount = gts.getNumberOfTitles()+1;
+            	HamtaDokument gts = new HamtaDokument();
+                          			int amount = gts.hamtaAntalTitlar()+1;
             %>
-            <%=amount %>	
+            <%=amount%>	
             </span></a></li>
             <!--  
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
@@ -104,18 +99,19 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 <div id="listaAllt">
 	<div id="listTitlesFunction">
 	<%
-	Date date = new Date();
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	%>
-	<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Hämtat: <%=sdf.format(date) %> </div> 
+	<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Hämtat: <%=sdf.format(date)%> </div> 
 	<form>
 	</button>
 	<%
-	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<Dokument> list = getLiteratureService.getTitles();
-	int lineCount = 0;
-	for(Dokument book: list){
-		lineCount++;
+		HamtaDokument hamtaDokument = new HamtaDokument();
+		ArrayList<Dokument> list = hamtaDokument.hamtaDokument();
+		Collections.sort(list);
+		int lineCount = 0;
+		for(Dokument book: list){
+			lineCount++;
 	%>
 	<!--
 
@@ -126,7 +122,8 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 	<ul class="list.group">
 	
 	<%
-	ArrayList<Lager> lagerLista = getLiteratureService.hamtaLager(book.getIsbn()); 
+	ArrayList<Lager> lagerLista = hamtaDokument.hamtaLager(book.getIsbn()); 
+	Collections.sort(lagerLista);
 	for(Lager lager: lagerLista){
 	%>
 	<%if(lager.getTillganglig() == 1){
@@ -188,11 +185,6 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 </div>
 </div>
  
-	
-	</p>
-</div>
-
-
 	<!-- Svar ifrån backend. ------------------------------------------ -->
 	
 	<% 
@@ -205,9 +197,7 @@ if (session.getAttribute("sparadRoll") == "Administratör") {
 			alert("<%=svar%>");
 		}
 		</script>
-	<% 
-	}
-	%>
+	<%}%>	
 
 
 </body>

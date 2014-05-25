@@ -1,11 +1,11 @@
-package se.prototyp.services;
+package funktion;
 
 import javax.naming.*;
 import javax.sql.DataSource;
 
 import java.sql.*;
 
-public class EditUserService{
+public class RedigeraAnvandare{
 
 	private DataSource ds;
 	Connection connection;
@@ -13,7 +13,7 @@ public class EditUserService{
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 	
-	  public EditUserService(){
+	  public RedigeraAnvandare(){
 		    try {
 		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
@@ -28,7 +28,7 @@ public class EditUserService{
 		    return ds.getConnection();
 		  }
 		  
-			public boolean editUser(String personnummer, String anvandarnamn, String losenord, String fornamn, String efternamn, 
+			public boolean redigeraAnvandare(String personnummer, String anvandarnamn, String losenord, String fornamn, String efternamn, 
 					String gatuadress, String stad, String postnummer, String telefon, String epost){
 				boolean edited = false;
 				try{

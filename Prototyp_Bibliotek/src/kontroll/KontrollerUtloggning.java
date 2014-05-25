@@ -1,4 +1,4 @@
-package se.prototyp.servlets;
+package kontroll;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+public class KontrollerUtloggning extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

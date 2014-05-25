@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="UTF-8"
-    import="java.util.ArrayList" import="se.prototyp.services.GetLiteratureService"
+    import="java.util.ArrayList"
     import="java.text.SimpleDateFormat" import="java.util.Date"
-    import="java.util.Collections" import="se.prototyp.services.GetLoansService"
-    import="model.*"	import="se.prototyp.services.*;"
+    import="java.util.Collections" 
+    import="modell.*"	import="funktion.*"
     %>
     
 <!DOCTYPE html>
@@ -23,7 +23,7 @@
 <body>
 
 <%
-// Vi spar ner användarinformationen från sessionen i variabler som vi kan använda på sidan.
+	// Vi spar ner användarinformationen från sessionen i variabler som vi kan använda på sidan.
 String sparatAnvandarnamn = (String) session.getAttribute("sparatAnvandarnamn");
 String sparatLosenord = (String) session.getAttribute("sparatLosenord");
 String sparatPersonnummer = (String) session.getAttribute("sparatPersonnummer");
@@ -48,7 +48,6 @@ if(!sparadRoll.equals("Låntagare")){
 	dispatcher.forward(request, response);
 	return;
 }
-
 %>
 
 <div class="page-header">
@@ -77,10 +76,10 @@ if(!sparadRoll.equals("Låntagare")){
           <ul class="dropdown-menu">
             <li id="listaAlltKnapp"><a href="#">Listning av alla dokument<span class="badge">
             <%
-            GetLiteratureService gts = new GetLiteratureService();
-  			int amount = gts.getNumberOfTitles()+1;
+            	HamtaDokument gts = new HamtaDokument();
+                                      			int amount = gts.hamtaAntalTitlar()+1;
             %>
-            <%=amount %>
+            <%=amount%>
             </span></a></li>
             <!--  
             <li id="listaEnskildTitelKnapp"><a href="#">Sök på enskilt dokument</a></li>
@@ -114,17 +113,18 @@ if(!sparadRoll.equals("Låntagare")){
 <div id="listaAllt">
 	<div id="listTitlesFunction">
 	<%
-	Date date = new Date();
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	%>
-	<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Hämtat: <%=sdf.format(date) %> </div> 
+	<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Hämtat: <%=sdf.format(date)%> </div> 
 	<form>
 	</button>
 	<%
-	GetLiteratureService getLiteratureService = new GetLiteratureService();
-	ArrayList<Dokument> list = getLiteratureService.getTitles();
-	int lineCount = 0;
-	for(Dokument book: list){
+		HamtaDokument hamtaDokument = new HamtaDokument();
+			ArrayList<Dokument> list = hamtaDokument.hamtaDokument();
+			Collections.sort(list);
+			int lineCount = 0;
+			for(Dokument book: list){
 		lineCount++;
 	%>
 	<!--
@@ -136,39 +136,48 @@ if(!sparadRoll.equals("Låntagare")){
 	<ul class="list.group">
 	
 	<%
-	ArrayList<Lager> lagerLista = getLiteratureService.hamtaLager(book.getIsbn()); 
-	for(Lager lager: lagerLista){
+			ArrayList<Lager> lagerLista = hamtaDokument.hamtaLager(book.getIsbn()); 
+			Collections.sort(lagerLista);
+			for(Lager lager: lagerLista){
+		%>
+	<%
+		if(lager.getTillganglig() == 1){
+	%> <li class="list-group-item list-group-item-success">
+	<%
+		}
 	%>
-	<%if(lager.getTillganglig() == 1){
-		%> <li class="list-group-item list-group-item-success">
-	<% 
-	}
-	%>
-	<%if(lager.getTillganglig() == 0){
-		%> <li class="list-group-item list-group-item-danger">
-	<% 
-	}
+	<%
+		if(lager.getTillganglig() == 0){
+	%> <li class="list-group-item list-group-item-danger">
+	<%
+		}
 	%>
 	
 	
-	<%=lager.toString() %>
+	<%=lager.toString()%>
 	<br>
-	<%if(lager.getTillganglig() == 1){
-		%>Reservera <span class="glyphicon glyphicon-share-alt"></span> <input type="checkbox">
-	<% 
-	}
+	<%
+		if(lager.getTillganglig() == 1){
+	%>Reservera <span class="glyphicon glyphicon-share-alt"></span> <input type="checkbox">
+	<%
+		}
 	%>
-	<%if(lager.getTillganglig() == 0){
-		%>Inte tillgänglig. <span class="glyphicon glyphicon-remove"></span>
-	<% 
-	}
+	<%
+		if(lager.getTillganglig() == 0){
+	%>Inte tillgänglig. <span class="glyphicon glyphicon-remove"></span>
+	<%
+		}
 	%>
 	<br>
-	<% }%>
+	<%
+		}
+	%>
 	</li>
 	</ul>
 	</li>
-	<%} %>
+	<%
+		}
+	%>
 	</ul>
 	</form>
 
@@ -196,11 +205,13 @@ if(!sparadRoll.equals("Låntagare")){
     <li>Senast tillagda dokument:</li>
     	<ul>
     		<%
-    		ArrayList<Lager> listaSenasteDokument = gts.hamtaSenasteLagerdokument();
-    		for(int i = 0; i<5; i++){
+    			ArrayList<Lager> listaSenasteDokument = gts.hamtaSenasteLagerdokument();
+    		    		for(int i = 0; i<5; i++){
     		%>
     		<li><%=listaSenasteDokument.get(i).toString()%></li>
-    		<%}%>
+    		<%
+    			}
+    		%>
     		
     	</ul>
     </ul>
@@ -250,13 +261,13 @@ if(!sparadRoll.equals("Låntagare")){
 
 <div id="minaLan">
 	<%
-	GetLoansService getLoansService = new GetLoansService();
-	ArrayList<Lan> lanLista = getLoansService.getLoans(sparatPersonnummer);
-	if(!lanLista.isEmpty()){
+		HamtaLan getLoansService = new HamtaLan();
+			ArrayList<Lan> lanLista = getLoansService.hamtaLan(sparatPersonnummer);
+			if(!lanLista.isEmpty()){
 		for(Lan lan: lanLista){
 	%>
 	<ul class="list-group">
-	<li class="list-group-item list-group-item-info"><%=lan.toString() %></li>
+	<li class="list-group-item list-group-item-info"><%=lan.getDokument().getTitel()%> | Tillbaka: <%=sdf.format(lan.getSlutdatum().getTime())%></li>
 	<%
 		} 
 	}
@@ -268,12 +279,12 @@ if(!sparadRoll.equals("Låntagare")){
 <div id="minaReservationer">
 	<%
 	HamtaReservation hamtaReservation = new HamtaReservation();
-	ArrayList<Reservation> reservationLista = hamtaReservation.hamtaReservationer(sparatPersonnummer);
-	if(!reservationLista.isEmpty()){
-		for(Reservation reservation: reservationLista){
+	ArrayList<Reservation> reservationsLista = hamtaReservation.hamtaReservationer(sparatPersonnummer);
+	if(!reservationsLista.isEmpty()){
+		for(Reservation reservation: reservationsLista){
 	%>
 	<ul class="list-group">
-	<li class="list-group-item list-group-item-info"><%=reservation.toString()%> </li>
+	<li class="list-group-item list-group-item-info"><%=reservation.getDokument().getTitel()%> </li>
 	<%
 		} 
 	}

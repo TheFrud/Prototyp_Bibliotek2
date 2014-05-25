@@ -1,11 +1,17 @@
-package se.prototyp.services;
+package funktion;
 
-import javax.naming.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import java.sql.*;
-
-public class AddLiteratureService{
+public class LaggTillForslag {
 
 	private DataSource ds;
 	Connection connection;
@@ -13,7 +19,7 @@ public class AddLiteratureService{
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 	
-	  public AddLiteratureService(){
+	  public LaggTillForslag(){
 		    try {
 		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
@@ -28,18 +34,22 @@ public class AddLiteratureService{
 		    return ds.getConnection();
 		  }
 		  
-		  public int addLiterature (String title) {
+		  public boolean laggTillForslag (String personnummer, String forslag) {
 			  int change = 0;
 			  try {
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("INSERT INTO dokument (Titel) VALUES (?)");
-				preparedStatement.setString(1, title);
+				preparedStatement = connection.prepareStatement("INSERT INTO inköpsförslag VALUES (null, ?, ?)");
+				preparedStatement.setString(1, personnummer);
+				preparedStatement.setString(2, forslag);
 				change = preparedStatement.executeUpdate();
-				return change;
+				if(change > 0){
+					return true;
+				}
+				return false;
 			}
 		    catch (SQLException sqlException) {
 		      sqlException.printStackTrace();
-				return change;
+				return false;
 		    }
 
 		    finally {
@@ -47,9 +57,4 @@ public class AddLiteratureService{
 		        try {connection.close();} catch (SQLException e) {}
 		      }
 		    }
-		  
-
-		  
 }
-
-

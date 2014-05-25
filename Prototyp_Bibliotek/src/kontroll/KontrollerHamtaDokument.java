@@ -1,4 +1,4 @@
-package se.prototyp.servlets;
+package kontroll;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Dokument;
-import se.prototyp.services.GetLiteratureService;
+import funktion.HamtaDokument;
+import modell.Dokument;
 
 @WebServlet("/getLiterature")
-public class GetLiteratureServlet extends HttpServlet {
+public class KontrollerHamtaDokument extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		GetLiteratureService getLiteratureService = new GetLiteratureService();
-		ArrayList<Dokument> literature = getLiteratureService.getTitles();
+		HamtaDokument hamtaDokument = new HamtaDokument();
+		ArrayList<Dokument> literature = hamtaDokument.hamtaDokument();
 		RequestDispatcher dispatcher;
 		
 		dispatcher = req.getRequestDispatcher("main.jsp");
@@ -33,8 +33,8 @@ public class GetLiteratureServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String title = req.getParameter("soktTitel");
-		GetLiteratureService getLiteratureService = new GetLiteratureService();
-		ArrayList<Dokument> literature = getLiteratureService.getTitles(title);
+		HamtaDokument hamtaDokument = new HamtaDokument();
+		ArrayList<Dokument> literature = hamtaDokument.hamtaDokument(title);
 		RequestDispatcher dispatcher;
 
 		dispatcher = req.getRequestDispatcher("searchedTitle.jsp");

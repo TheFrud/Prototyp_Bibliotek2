@@ -1,4 +1,4 @@
-package se.prototyp.servlets;
+package kontroll;
 
 import java.io.IOException;
 
@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import se.prototyp.services.DBConsistencyService;
-import se.prototyp.services.EditUserService;
+import funktion.Konsistenskontroll;
+import funktion.RedigeraAnvandare;
 
 @WebServlet("/editUser")
-public class EditUserServlet extends HttpServlet {
+public class KontrollerRedigeraAnvandare extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -32,13 +32,13 @@ public class EditUserServlet extends HttpServlet {
 		String telefon = (String) req.getParameter("telefonEdit");
 		String epost = (String) req.getParameter("epostEdit");
 		String a = (String) session.getAttribute("sparatAnvandarnamn");
-		EditUserService editUserService = new EditUserService();
+		RedigeraAnvandare redigeraAnvandare = new RedigeraAnvandare();
 		RequestDispatcher dispatcher;
 
-		DBConsistencyService consistency = new DBConsistencyService();
+		Konsistenskontroll consistency = new Konsistenskontroll();
 		
 		// Vi tittar om ifyllt lösenord eller användarnamn redan finns i databasen.
-		if(consistency.checkIfUserNameExists(anvandarnamn) && anvandarnamn.equals(a) == false){
+		if(consistency.hittaAnvandarnamn(anvandarnamn) && anvandarnamn.equals(a) == false){
 			req.setAttribute("svar", "Detta användarnamn finns redan i databasen. Välj ett annat.");
 			if(session.getAttribute("sparadRoll").equals("Låntagare")){
 				dispatcher = req.getRequestDispatcher("lantagare.jsp");
@@ -53,7 +53,7 @@ public class EditUserServlet extends HttpServlet {
 		}
 		
 		// Vi försöker uppdatera databasen med de nya användaruppgifterna.
-		if(editUserService.editUser(personnummer, anvandarnamn, losenord, fornamn, efternamn, gatuadress, stad, postnummer, telefon, epost)){
+		if(redigeraAnvandare.redigeraAnvandare(personnummer, anvandarnamn, losenord, fornamn, efternamn, gatuadress, stad, postnummer, telefon, epost)){
 			// Uppdateringen lyckades.
 			// Vi läser in de nya uppgifterna i sessionen (inloggningen).
 			session.setAttribute("sparatAnvandarnamn", anvandarnamn);

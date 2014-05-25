@@ -19,6 +19,10 @@ $(document).ready(function() {
 	$("#lamnaInkopsforslagPanel").hide();
 	$("#minaLan").hide();
 	$("#minaReservationer").hide();
+	$("#laggTillDokument").hide();
+	$("#pagaendeLan").hide();
+	$("#pagaendeReservationer").hide();
+	$("#forslag").hide();
 	
 	// N�r registerknappen klickats p� k�r vi denna funktion..
 	// Denna knapp har getts id="register" i dokumentet login.jsp.
@@ -37,7 +41,7 @@ $(document).ready(function() {
 	$("#katalogiseraKnapp").click(function(){
 		
 		
-		$("#katalogisera").fadeToggle(500);
+		$("#katalogisera").fadeIn(200);
 		// Observera att vi g�mmer alla paneler som inte �r "katalogiserapanelen". Vi vill endast att katalogiserapanelen ska synas.
 		// Observera ocks� att det s�kert kan g�ras 100 g�nger b�ttre om man f�rst�r vad man h�ller p� med.
 		// Detta �r sj�lvklart inte ett bra s�tt att g�ra saker p� men det fungerar.. for now.
@@ -50,11 +54,15 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#minaLan").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 
 	});
 	
 	$("#listaAlltKnapp").click(function(){
-		$("#listaAllt").fadeToggle(500);
+		$("#listaAllt").fadeIn(200);
 		$("#katalogisera").hide();
 		$("#listaEnskildTitel").hide();
 		$("#searchedTitle").hide();
@@ -64,9 +72,13 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#minaLan").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
 	$("#listaEnskildTitelKnapp").click(function(){
-		$("#listaEnskildTitel").fadeToggle(500);
+		$("#listaEnskildTitel").fadeIn(200);
 		$("#katalogisera").hide();
 		$("#listaAllt").hide();
 		$("#searchedTitle").hide();
@@ -76,10 +88,14 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#minaLan").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
 	
 	$("#pagaendeLanKnapp").click(function(){
-		$("#listaPagaendeLan").fadeToggle(500);
+		$("#listaPagaendeLan").fadeIn(200);
 		$("#katalogisera").hide();
 		$("#listaAllt").hide();
 		$("#searchedTitle").hide();
@@ -89,6 +105,10 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#minaLan").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
 	
 	$("#avregistreraKnapp").click(function(){
@@ -97,7 +117,7 @@ $(document).ready(function() {
 
 	});
 	$("#lamnaInkopsforslagKnapp").click(function(){
-		$("#lamnaInkopsforslagPanel").fadeToggle(500);
+		$("#lamnaInkopsforslagPanel").fadeIn(200);
 		$("#valkomsttext").hide();
 		$("#katalogisera").hide();
 		$("#listaAllt").hide();
@@ -107,10 +127,14 @@ $(document).ready(function() {
 		$("#listaEnskildTitel").hide();
 		$("#minaLan").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 
 	});
 	$("#installningarKnapp").click(function(){
-		$("#redigeraAnvandare").fadeToggle(500);
+		$("#redigeraAnvandare").fadeIn(200);
 		$("#valkomsttext").hide();
 		$("#katalogisera").hide();
 		$("#listaAllt").hide();
@@ -120,10 +144,14 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#minaLan").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
 	
 	$("#edit").click(function(){
-		$("#anvandarnamnEdit").removeAttr("disabled");
+		$("#anvandarnamnEdit").fadeIn(200);
 		$("#losenordEdit").removeAttr("disabled");
 		$("#fornamnEdit").removeAttr("disabled");
 		$("#efternamnEdit").removeAttr("disabled");
@@ -134,10 +162,14 @@ $(document).ready(function() {
 		$("#epostEdit").removeAttr("disabled");
 		$("#genomforAndringar").removeAttr("disabled");
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
 	
 	$("#minaLanKnapp").click(function(){
-		$("#minaLan").fadeToggle(500);
+		$("#minaLan").fadeIn(200);
 		$("#valkomsttext").hide();
 		$("#katalogisera").hide();
 		$("#listaAllt").hide();
@@ -147,10 +179,14 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#redigeraAnvandare").hide();
 		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
 	
 	$("#minaReservationerKnapp").click(function(){
-		$("#minaReservationer").fadeToggle(500);
+		$("#minaReservationer").fadeIn(200);
 		$("#valkomsttext").hide();
 		$("#katalogisera").hide();
 		$("#listaAllt").hide();
@@ -160,8 +196,75 @@ $(document).ready(function() {
 		$("#lamnaInkopsforslagPanel").hide();
 		$("#redigeraAnvandare").hide();
 		$("#minaLan").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
 	});
-	
+	$("#laggTillDokumentKnapp").click(function(){
+		$("#laggTillDokument").fadeIn(200);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+		$("#redigeraAnvandare").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
+	});
+	$("#pagaendeLanKnapp").click(function(){
+		$("#pagaendeLan").fadeIn(200);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+		$("#redigeraAnvandare").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeReservationer").hide();
+		$("#forslag").hide();
+	});
+	$("#reservationerKnapp").click(function(){
+		$("#pagaendeReservationer").fadeIn(200);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+		$("#redigeraAnvandare").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#forslag").hide();
+	});
+	$("#forslagKnapp").click(function(){
+		$("#forslag").fadeIn(200);
+		$("#valkomsttext").hide();
+		$("#katalogisera").hide();
+		$("#listaAllt").hide();
+		$("#searchedTitle").hide();
+		$("#listaPagaendeLan").hide();
+		$("#listaEnskildTitel").hide();
+		$("#lamnaInkopsforslagPanel").hide();
+		$("#redigeraAnvandare").hide();
+		$("#minaLan").hide();
+		$("#minaReservationer").hide();
+		$("#laggTillDokument").hide();
+		$("#pagaendeLan").hide();
+		$("#pagaendeReservationer").hide();
+	});
 	
 	
 	$("#fragetecken").hover(function(){
