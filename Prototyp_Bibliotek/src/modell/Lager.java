@@ -64,7 +64,7 @@ public class Lager implements Comparable<Lager>{
 		this.tillganglig = tillganglig;
 	}
 
-
+	// Så att vi kan jämföra dokument med hjälp av deras tilläggningsdatum.
 	public int compareTo(Lager l) {
 		return -this.tillagd.compareTo(l.tillagd);
 	}

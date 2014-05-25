@@ -18,8 +18,10 @@ public class KontrollerUtloggning extends HttpServlet {
 		
 		HttpSession session = req.getSession();
 		if(session != null){
+			// Här sker utloggningen.
 			session.invalidate();
 		}
+		// Användaren skickas tillbaka till inloggningssidan.
 		RequestDispatcher dispatcher;
 		dispatcher = req.getRequestDispatcher("login.jsp");
 		dispatcher.forward(req, resp);

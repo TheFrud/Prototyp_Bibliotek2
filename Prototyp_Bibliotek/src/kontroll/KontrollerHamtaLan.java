@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import funktion.HamtaAnvandare;
 import funktion.HamtaLan;
 import modell.Lan;
 
@@ -21,24 +22,22 @@ public class KontrollerHamtaLan extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 		HamtaLan getLoans = new HamtaLan();
+		RequestDispatcher dispatcher;
 		HttpSession session = req.getSession();
+		
+		// Vi hämtar personnummer från sessionen.
 		String personnummer= (String) session.getAttribute("sparatPersonnummer");
 		
+		// Vi hämtar en viss persons lån med hjälp av inloggningens sparade personnummer.
 		ArrayList<Lan> loans = getLoans.hamtaLan(personnummer);
 		
-		RequestDispatcher dispatcher;
 	
-		if(session.getAttribute("sparadRoll").equals("Låntagare")){
-			dispatcher = req.getRequestDispatcher("lantagare.jsp");
-			dispatcher.forward(req, resp);
-			return;
-		}
-		if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
-			dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-			dispatcher.forward(req, resp);
-			return;
-		}
+		// Vi tittar vilken roll användaren har. Och skickar vidare användaren till rätt vy.
+		dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+		dispatcher.forward(req, resp);
+		return;
 		
 	}
 }

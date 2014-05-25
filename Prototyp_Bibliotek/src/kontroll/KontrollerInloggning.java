@@ -24,6 +24,7 @@ public class KontrollerInloggning extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// Gästinlogging
+	// Denna metod används inte //
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// Sätter in gästdata i sessionen.
@@ -54,6 +55,7 @@ public class KontrollerInloggning extends HttpServlet {
 		String losenordIn = request.getParameter("losenordInloggning");
 		Inloggning inloggning = new Inloggning();
 		Konsistenskontroll dbConsistencyService = new Konsistenskontroll();
+		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 		RequestDispatcher dispatcher;
 		
 		// Tittar så att användaren fyllt i alla fält.
@@ -68,7 +70,6 @@ public class KontrollerInloggning extends HttpServlet {
 		if(dbConsistencyService.autentisera(anvandarnamnIn, losenordIn)){
 	
 			// Vi tar reda på användardatan.
-			HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 			ArrayList<String> userInfo = hamtaAnvandare.hamtaAnvandarInfo(anvandarnamnIn, losenordIn);
 			HttpSession session = request.getSession();
 			
@@ -104,20 +105,11 @@ public class KontrollerInloggning extends HttpServlet {
 			session.setAttribute("sparadEpost", epost);
 			session.setAttribute("sparadRoll", roll);
 			
-			// Loggas in.
-			if(roll.equals("Låntagare")){
-				dispatcher = request.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(request, response);
-				return;
-			}
-			if(roll.equals("Bibliotekarie")){
-				dispatcher = request.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(request, response);
-				return;
-			}
-			dispatcher = request.getRequestDispatcher("main.jsp");
+			// Vi tittar vilken roll användaren har. Och skickar vidare användaren till rätt vy.
+			dispatcher = request.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(request, response);
 			return;
+
 
 
 		}
@@ -126,7 +118,6 @@ public class KontrollerInloggning extends HttpServlet {
 		if(inloggning.laggTillAnvandareFranSkolDB(anvandarnamnIn, losenordIn)){
 			
 			// Vi tar reda på användardatan.
-			HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 			ArrayList<String> userInfo = hamtaAnvandare.hamtaAnvandarInfo(anvandarnamnIn, losenordIn);
 			HttpSession session = request.getSession();
 			
@@ -159,7 +150,9 @@ public class KontrollerInloggning extends HttpServlet {
 			session.setAttribute("sparadRoll", roll);
 			
 			
-			// Loggas in.
+			// Användaren skickas vidare användaren till rätt vy.
+			// Observera att man alltid ses som en låntagare som nyregistrerad.
+			// Därför kollar vi inte upp någon roll.
 			request.setAttribute("svar", "Välkommen " + fornamn + " " + efternamn + "! Du är nu registrerad på Bibliotek Informatika.");
 			dispatcher = request.getRequestDispatcher("lantagare.jsp");
 			dispatcher.forward(request, response);

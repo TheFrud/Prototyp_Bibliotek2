@@ -15,7 +15,6 @@ public class RedigeraAnvandare{
 	
 	  public RedigeraAnvandare(){
 		    try {
-		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 		    }
@@ -32,6 +31,7 @@ public class RedigeraAnvandare{
 					String gatuadress, String stad, String postnummer, String telefon, String epost){
 				boolean edited = false;
 				try{
+					// Vi försöker ändra en persons uppgifter i databasen.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("UPDATE person SET Användarnamn = ?, Lösenord = ?, Förnamn = ?, Efternamn = ?, Gatuadress = ?, Stad = ?, Postnummer = ?, Telefon = ?, Epost = ? WHERE Personnummer = ?");
 					preparedStatement.setString(1, anvandarnamn);
@@ -45,6 +45,7 @@ public class RedigeraAnvandare{
 					preparedStatement.setString(9, epost);
 					preparedStatement.setString(10, personnummer);
 					int numOfRowsEdited = preparedStatement.executeUpdate();
+					// Ändrades någon rad eller ej?
 					if(numOfRowsEdited>0){
 						edited = true;
 					}

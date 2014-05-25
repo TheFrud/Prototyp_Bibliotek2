@@ -23,7 +23,6 @@ public class Inloggning{
     
 	public Inloggning(){
 		  try {
-		    // Look up the JNDI data source only once at init time
 		    Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 			ds2 = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek2");

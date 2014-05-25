@@ -84,6 +84,7 @@ public class Dokument implements Comparable<Dokument>{
 	public void setBeskrivning(String beskrivning) {
 		this.beskrivning = beskrivning;
 	}
+	// Så att vi kan jämföra dokument med hjälp av deras titel.
 	public int compareTo(Dokument dok) {
 		return this.getTitel().compareTo(dok.getTitel());
 	}

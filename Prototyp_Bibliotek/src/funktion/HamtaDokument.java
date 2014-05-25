@@ -35,9 +35,11 @@ public class HamtaDokument{
 			public ArrayList<Dokument> hamtaDokument(){
 				ArrayList<Dokument> list = new ArrayList<Dokument>();
 				try{
+					// Hämta alla dokument och lägg i dokumentlista.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from dokument");
 					resultSet = preparedStatement.executeQuery();
+					// Dokumentobjekt skapas och läggs i lista.
 					while(resultSet.next()){
 						list.add(new Dokument(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)
 								, resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)
@@ -66,10 +68,12 @@ public class HamtaDokument{
 			public Dokument hamtaDokumentMedIsbn(String isbn){
 				Dokument dokument = new Dokument();
 				try{
+					// Hämta dokument med hjälp av isbn
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from dokument WHERE isbn = ?");
 					preparedStatement.setString(1, isbn);
 					resultSet = preparedStatement.executeQuery();
+					// Dokumentobjekt skapas.
 					while(resultSet.next()){
 						dokument = new Dokument(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)
 								, resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)
@@ -98,10 +102,12 @@ public class HamtaDokument{
 			public Dokument hamtaDokumentMedId(String id){
 				Dokument dokument = new Dokument();
 				try{
+					// Hämta dokument med hjälp av id
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from dokument WHERE isbn IN (SELECT ISBN FROM lager WHERE DokumentID = ?)");
 					preparedStatement.setString(1, id);
 					resultSet = preparedStatement.executeQuery();
+					// Dokumentobjekt skapas.
 					while(resultSet.next()){
 						dokument = new Dokument(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)
 								, resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)
@@ -130,10 +136,12 @@ public class HamtaDokument{
 			public ArrayList<Dokument> hamtaDokument(String title){
 				ArrayList<Dokument> list = new ArrayList<Dokument>();
 				try{
+					// Hämta dokument med en viss titel.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from dokument WHERE Titel = ?");
 					preparedStatement.setString(1, title);
 					resultSet = preparedStatement.executeQuery();
+					// Skapa dokumentobjekt och lägg i lista
 					while(resultSet.next()){
 						list.add(new Dokument(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)
 								, resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)
@@ -162,9 +170,11 @@ public class HamtaDokument{
 			public int hamtaAntalTitlar(){
 				int amount = 0;
 				try{
+					// Hämta alla dokument.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from dokument");
 					resultSet = preparedStatement.executeQuery();
+					// öka mängden med "1" för varje returnerad rad.
 					while(resultSet.next()){
 						amount++;
 					}
@@ -194,10 +204,12 @@ public class HamtaDokument{
 				ArrayList<Lager> list = new ArrayList<Lager>();
 				HamtaDokument gts = new HamtaDokument();
 				try{
+					// Hämta alla lagerobjekt med ett visst isbn
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from lager WHERE ISBN = ?");
 					preparedStatement.setString(1, isbn);
 					resultSet = preparedStatement.executeQuery();
+					// Skapa lagerobjekt och lägg i lista.
 					while(resultSet.next()){
 						list.add(new Lager(resultSet.getInt(1), gts.hamtaDokumentMedIsbn(isbn), resultSet.getString(3), resultSet.getString(5), resultSet.getByte(4), resultSet.getString(6) ));
 					}
@@ -225,12 +237,15 @@ public class HamtaDokument{
 				ArrayList<Lager> list = new ArrayList<Lager>();
 				HamtaDokument gts = new HamtaDokument();
 				try{
+					// Hämta alla dokument i lager.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from lager");
 					resultSet = preparedStatement.executeQuery();
+					// Skapa lagerobjekt och lägg i lista.
 					while(resultSet.next()){
 						list.add(new Lager(resultSet.getInt(1), gts.hamtaDokumentMedIsbn(resultSet.getString(5)), resultSet.getString(2), resultSet.getString(3), resultSet.getByte(4), resultSet.getString(6)));
 					}
+					// Sortera lista efter startdatum. >>> Se implementerat comparableinterface i lagerklassen!
 					Collections.sort(list);
 					return list;
 				}

@@ -18,7 +18,6 @@ public class LaggTillDokument{
 	
 	  public LaggTillDokument(){
 		    try {
-		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 		    }
@@ -71,7 +70,7 @@ public class LaggTillDokument{
 				preparedStatement.setString(4, isbn);
 				preparedStatement.setString(5, sdf.format(c.getTime()));
 				
-				// Lyckades operationen?
+				// Har rader lagts till i databasen?
 				change = preparedStatement.executeUpdate();
 				return change;
 			}

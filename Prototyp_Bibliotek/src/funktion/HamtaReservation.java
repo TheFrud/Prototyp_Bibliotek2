@@ -23,7 +23,6 @@ public class HamtaReservation{
 	
 	  public HamtaReservation(){
 		    try {
-		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 		    }
@@ -41,6 +40,7 @@ public class HamtaReservation{
 				SimpleDateFormat sdf = new SimpleDateFormat();
 				HamtaDokument gts = new HamtaDokument();
 				try{
+					// Hämta alla reservationer med hjälp av personnummer.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * FROM reservation WHERE Person_Personnummer = ?");
 					preparedStatement.setString(1, personnummer);
@@ -49,14 +49,17 @@ public class HamtaReservation{
 						Calendar calendarStartdatum = new GregorianCalendar();
 						Calendar calendarSlutdatum = new GregorianCalendar();		
 						
+						// Hämta start och slut-datum och lägg in i strängar.
 						String date1String = resultSet.getString(3);
 						String date2String = resultSet.getString(4);
-
+						
+						// Splitta upp strängarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
 						String[] dateDelar = date1String.split("-");
 						calendarStartdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						dateDelar = date2String.split("-");
 						calendarSlutdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
-
+						
+						// Skapa reservationsobjekt och lägg i lista.
 						list.add(new Reservation(hamtaAnvandare.hamtaAnvandare(resultSet.getString(1)), gts.hamtaDokumentMedId(resultSet.getString(2)) , calendarStartdatum, calendarSlutdatum));
 
 					}
@@ -79,6 +82,7 @@ public class HamtaReservation{
 				SimpleDateFormat sdf = new SimpleDateFormat();
 				HamtaDokument gts = new HamtaDokument();
 				try{
+					// Hämta alla reservationer
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * FROM reservation");
 					resultSet = preparedStatement.executeQuery();
@@ -86,14 +90,17 @@ public class HamtaReservation{
 						Calendar calendarStartdatum = new GregorianCalendar();
 						Calendar calendarSlutdatum = new GregorianCalendar();		
 						
+						// Hämta start och slut-datum och lägg in i strängar.
 						String date1String = resultSet.getString(3);
 						String date2String = resultSet.getString(4);
 
+						// Splitta upp strängarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
 						String[] dateDelar = date1String.split("-");
 						calendarStartdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						dateDelar = date2String.split("-");
 						calendarSlutdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						
+						// Skapa reservationsobjekt och lägg i lista.
 						list.add(new Reservation(hamtaAnvandare.hamtaAnvandare(resultSet.getString(1)), gts.hamtaDokumentMedId(resultSet.getString(2)) , calendarStartdatum, calendarSlutdatum));
 
 					}

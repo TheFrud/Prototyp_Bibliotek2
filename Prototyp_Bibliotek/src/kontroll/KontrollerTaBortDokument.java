@@ -1,3 +1,6 @@
+// Inte implementerad! //
+////////////////////////
+
 package kontroll;
 
 import java.io.IOException;

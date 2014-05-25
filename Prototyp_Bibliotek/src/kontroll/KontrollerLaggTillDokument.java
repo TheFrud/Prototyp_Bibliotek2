@@ -22,6 +22,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 		String personnummer = (String) session.getAttribute("sparatPersonnummer");
 		
+		// Vi hämtar in all data användaren skrivit in.
 		String isbn = req.getParameter("isbn");
 		String titel = req.getParameter("titel");
 		String upplaga = req.getParameter("upplaga");
@@ -80,6 +81,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 			
 
 		}
+		// Om dokumentet inte kunde läggas till.
 		else{
 			req.setAttribute("svar", "Dokumentet kunde inte läggas till.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
@@ -89,6 +91,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 
 		}
 	}
+	// Metod för att titta om en sträng kan omvandlas till ett heltal.
 	public static boolean arHeltal(String s) {
 	    try { 
 	        Integer.parseInt(s); 
@@ -97,6 +100,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 	    }
 	    return true;
 	}
+	// Metod för att titta om en sträng kan omvandlas till ett stort heltal.
 	public static boolean arLong(String s) {
 	    try { 
 	        Long.parseLong(s); 

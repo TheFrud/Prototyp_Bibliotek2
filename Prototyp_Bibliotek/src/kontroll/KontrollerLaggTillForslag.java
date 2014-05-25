@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import funktion.HamtaAnvandare;
 import funktion.LaggTillForslag;
 
 @WebServlet("/lamnaInkopsForslag")
@@ -19,70 +20,45 @@ public class KontrollerLaggTillForslag extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession session = req.getSession();
+		// Vi spar hämtar personens roll och personnummer.
 		String role = (String) session.getAttribute("sparadRoll");
 		String personnummer = (String) session.getAttribute("sparatPersonnummer");
+		// Vi tittar vad användaren skrev i textrutan.
 		String forslag = req.getParameter("forslagText");
 
+		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 		RequestDispatcher dispatcher;
 		LaggTillForslag laggTillForslag = new LaggTillForslag();
 		
+		// Vi tittar om förslaget var tomt.
 		if(req.getParameter("forslagText").equals("")){
+			// Ger feedback och skickar tillbaka användaren till rätt vy.
 			req.setAttribute("svar", "Som vi brukar säga på Bibliotek Informatika: 'Ett tomt förslag är inget förslag.' / Bruno Nilsson, avdelning C");
-			if(role.equals("Låntagare")){
-				dispatcher = req.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(role.equals("Bibliotekarie")){
-				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(role.equals("Administratör")){
-				dispatcher = req.getRequestDispatcher("administrator.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
+			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+			dispatcher.forward(req, resp);
+			return;
+	
 		}
 		
+		// Vi försöker lägga till dokumentet.
 		if(laggTillForslag.laggTillForslag(personnummer, forslag)){
+			// Ger feedback och skickar tillbaka användaren till rätt vy.
 			req.setAttribute("svar", "Tack för visat intresse! Vi tittar på ditt förslag så fort vi kan. / Bruno Nilsson, avdelning C");
-			
-			if(role.equals("Låntagare")){
-				dispatcher = req.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(role.equals("Bibliotekarie")){
-				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(role.equals("Administratör")){
-				dispatcher = req.getRequestDispatcher("administrator.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
+			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+			dispatcher.forward(req, resp);
+			return;
+	
 		}
+		// Om det inte lyckades.
 		else{
-		req.setAttribute("svar", "Förslaget kunde inte läggas till. Kontakta administratören.");
-			
-			if(role.equals("Låntagare")){
-				dispatcher = req.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(role.equals("Bibliotekarie")){
-				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(role.equals("Administratör")){
-				dispatcher = req.getRequestDispatcher("administrator.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
+			// Ger feedback och skickar tillbaka användaren till rätt vy.
+			req.setAttribute("svar", "Förslaget kunde inte läggas till. Kontakta administratören.");
+			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+			dispatcher.forward(req, resp);
+			return;
 		}
+
+	
 		
 
 

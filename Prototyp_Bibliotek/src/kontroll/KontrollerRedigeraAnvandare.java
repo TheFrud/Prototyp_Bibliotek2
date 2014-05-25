@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import funktion.HamtaAnvandare;
 import funktion.Konsistenskontroll;
 import funktion.RedigeraAnvandare;
 
@@ -20,7 +21,10 @@ public class KontrollerRedigeraAnvandare extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession session = req.getSession();
+		Konsistenskontroll consistency = new Konsistenskontroll();
+		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 
+		// Vi hämtar all data användaren har fyllt i formuläret.
 		String personnummer = (String) session.getAttribute("sparatPersonnummer");
 		String anvandarnamn = (String) req.getParameter("anvandarnamnEdit");
 		String losenord = (String) req.getParameter("losenordEdit");
@@ -35,21 +39,16 @@ public class KontrollerRedigeraAnvandare extends HttpServlet {
 		RedigeraAnvandare redigeraAnvandare = new RedigeraAnvandare();
 		RequestDispatcher dispatcher;
 
-		Konsistenskontroll consistency = new Konsistenskontroll();
+
 		
 		// Vi tittar om ifyllt lösenord eller användarnamn redan finns i databasen.
 		if(consistency.hittaAnvandarnamn(anvandarnamn) && anvandarnamn.equals(a) == false){
+			// Ger feedback och skickar tillbaka användaren till rätt vy.
 			req.setAttribute("svar", "Detta användarnamn finns redan i databasen. Välj ett annat.");
-			if(session.getAttribute("sparadRoll").equals("Låntagare")){
-				dispatcher = req.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
-				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
+			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+			dispatcher.forward(req, resp);
+			return;
+	
 		}
 		
 		// Vi försöker uppdatera databasen med de nya användaruppgifterna.
@@ -66,33 +65,22 @@ public class KontrollerRedigeraAnvandare extends HttpServlet {
 			session.setAttribute("sparadTelefon", telefon);
 			session.setAttribute("sparadEpost", epost);
 			fornamn = (String) session.getAttribute("sparatFornamn");
+			// Ger feedback och skickar tillbaka användaren till rätt vy.
 			req.setAttribute("svar", "Gratulerar " + fornamn + "! Dina användaruppgifter är nu uppdaterade.");
-			if(session.getAttribute("sparadRoll").equals("Låntagare")){
-				dispatcher = req.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
-				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
+			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+			dispatcher.forward(req, resp);
+			return;
+
 			
 		}
 		else{
 			// Uppdateringen lyckades inte.
 			fornamn = (String) session.getAttribute("sparatFornamn");
+			// Ger feedback och skickar tillbaka användaren till rätt vy.
 			req.setAttribute("svar", "Tyvärr " + fornamn + "! Dina användaruppgifter kunde inte uppdateras.");
-			if(session.getAttribute("sparadRoll").equals("Låntagare")){
-				dispatcher = req.getRequestDispatcher("lantagare.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
-			if(session.getAttribute("sparadRoll").equals("Bibliotekarie")){
-				dispatcher = req.getRequestDispatcher("bibliotekarie.jsp");
-				dispatcher.forward(req, resp);
-				return;
-			}
+			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
+			dispatcher.forward(req, resp);
+			return;
 
 		}
 		

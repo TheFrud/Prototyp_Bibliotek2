@@ -1,3 +1,5 @@
+// Denna klass används inte. Uppgifterna hämtas istället in direkt i vyn. //
+///////////////////////////////////////////////////////////////////////////
 package kontroll;
 
 import java.io.IOException;

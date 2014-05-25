@@ -28,7 +28,6 @@ public class HamtaForslag {
 	
 	  public HamtaForslag(){
 		    try {
-		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 		    }
@@ -44,13 +43,13 @@ public class HamtaForslag {
 				ArrayList<Forslag> list = new ArrayList<Forslag>();
 				HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 				try{
+					// Hämta alla förslag.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * FROM inköpsförslag");
 					resultSet = preparedStatement.executeQuery();
+					// Skapa förslagobjekt och lägg i lista.
 					while(resultSet.next()){
-				
 						list.add(new Forslag(hamtaAnvandare.hamtaAnvandare(resultSet.getString(2)), resultSet.getString(3)));
-
 					}
 					return list;
 				}

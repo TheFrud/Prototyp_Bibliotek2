@@ -20,7 +20,6 @@ public class HamtaLan{
 	
 	  public HamtaLan(){
 		    try {
-		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 		    }
@@ -37,6 +36,7 @@ public class HamtaLan{
 				HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 				HamtaDokument hamtaDokument = new HamtaDokument();
 				try{
+					// Hämta alla lån med hjälp av personnummer.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * FROM lån WHERE Person_Personnummer = ?");
 					preparedStatement.setString(1, personnummer);
@@ -45,16 +45,17 @@ public class HamtaLan{
 						Calendar calendarStartdatum = new GregorianCalendar();
 						Calendar calendarSlutdatum = new GregorianCalendar();		
 						
+						// Hämta start och slut-datum och lägg in i strängar.
 						String date1String = resultSet.getString(2);
 						String date2String = resultSet.getString(3);
 
+						// Splitta upp strängarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
 						String[] dateDelar = date1String.split("-");
 						calendarStartdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						dateDelar = date2String.split("-");
 						calendarSlutdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						
-						
-						
+						// Skapa lånobjekt och lägg i lista.
 						list.add(new Lan(resultSet.getString(1), calendarStartdatum , calendarSlutdatum , hamtaDokument.hamtaDokumentMedId(resultSet.getString(4)), hamtaAnvandare.hamtaAnvandare(personnummer)));
 					}
 					return list;
@@ -74,6 +75,7 @@ public class HamtaLan{
 				HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 				HamtaDokument hamtaDokument = new HamtaDokument();
 				try{
+					// Hämta alla lån.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * FROM lån");
 					resultSet = preparedStatement.executeQuery();
@@ -81,14 +83,17 @@ public class HamtaLan{
 						Calendar calendarStartdatum = new GregorianCalendar();
 						Calendar calendarSlutdatum = new GregorianCalendar();		
 						
+						// Hämta start och slut-datum och lägg in i strängar.
 						String date1String = resultSet.getString(2);
 						String date2String = resultSet.getString(3);
 
+						// Splitta upp strängarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
 						String[] dateDelar = date1String.split("-");
 						calendarStartdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						dateDelar = date2String.split("-");
 						calendarSlutdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						
+						// Skapa lånobjekt och lägg i lista.
 						list.add(new Lan(resultSet.getString(1), calendarStartdatum , calendarSlutdatum , hamtaDokument.hamtaDokumentMedId(resultSet.getString(4)), hamtaAnvandare.hamtaAnvandare(resultSet.getString(5))));
 					}
 					return list;

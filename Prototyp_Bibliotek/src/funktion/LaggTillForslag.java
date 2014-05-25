@@ -21,7 +21,6 @@ public class LaggTillForslag {
 	
 	  public LaggTillForslag(){
 		    try {
-		      // Look up the JNDI data source only once at init time
 		      Context ctx = new InitialContext();
 			  ds = (DataSource) ctx.lookup("java:comp/env/jdbc/prototyp_bibliotek");
 		    }
@@ -37,11 +36,13 @@ public class LaggTillForslag {
 		  public boolean laggTillForslag (String personnummer, String forslag) {
 			  int change = 0;
 			  try {
+				 // Vi lägger till ett nytt förslag i databasen.
 				connection = getConnection();
 				preparedStatement = connection.prepareStatement("INSERT INTO inköpsförslag VALUES (null, ?, ?)");
 				preparedStatement.setString(1, personnummer);
 				preparedStatement.setString(2, forslag);
 				change = preparedStatement.executeUpdate();
+				// Vi tittar om raden lagts in.
 				if(change > 0){
 					return true;
 				}
