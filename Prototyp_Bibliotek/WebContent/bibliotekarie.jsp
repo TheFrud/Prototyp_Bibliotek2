@@ -36,8 +36,12 @@ String sparadTelefon = (String) session.getAttribute("sparadTelefon");
 String sparadEpost = (String) session.getAttribute("sparadEpost");
 String sparadRoll = (String) session.getAttribute("sparadRoll");
 
-if(sparadRoll.equals(null)){
-	sparadRoll = "";
+if(sparadRoll == null){
+	request.setAttribute("svar", "Du har inte rätt behörighet för att nå denna sida.");
+	RequestDispatcher dispatcher;
+	dispatcher = request.getRequestDispatcher("login.jsp");
+	dispatcher.forward(request, response);
+	return;
 }
 
 if(!sparadRoll.equals("Bibliotekarie")){
@@ -47,6 +51,7 @@ if(!sparadRoll.equals("Bibliotekarie")){
 	dispatcher.forward(request, response);
 	return;
 }
+
 %>
 
 <div class="page-header">
@@ -56,7 +61,6 @@ if(!sparadRoll.equals("Bibliotekarie")){
 	
 <nav class="navbar navbar-default" role="navigation">	
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
@@ -66,8 +70,6 @@ if(!sparadRoll.equals("Bibliotekarie")){
       </button>
       <a class="navbar-brand" href="#"></a>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="dropdown">
