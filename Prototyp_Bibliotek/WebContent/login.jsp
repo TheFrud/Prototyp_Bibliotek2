@@ -28,7 +28,6 @@
 	</form>
 
 	<!-- Svar ifrån backend.------------------------------------------------- -->
-	
 	<% 
 	if(request.getAttribute("svar") != null){
 		String svar = (String) request.getAttribute("svar");

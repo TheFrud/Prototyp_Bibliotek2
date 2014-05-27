@@ -20,30 +20,30 @@ public class KontrollerLaggTillForslag extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession session = req.getSession();
-		// Vi spar hämtar personens roll och personnummer.
+		// Vi spar hï¿½mtar personens roll och personnummer.
 		String role = (String) session.getAttribute("sparadRoll");
 		String personnummer = (String) session.getAttribute("sparatPersonnummer");
-		// Vi tittar vad användaren skrev i textrutan.
+		// Vi tittar vad anvï¿½ndaren skrev i textrutan.
 		String forslag = req.getParameter("forslagText");
 
 		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 		RequestDispatcher dispatcher;
 		LaggTillForslag laggTillForslag = new LaggTillForslag();
 		
-		// Vi tittar om förslaget var tomt.
+		// Vi tittar om fï¿½rslaget var tomt.
 		if(req.getParameter("forslagText").equals("")){
-			// Ger feedback och skickar tillbaka användaren till rätt vy.
-			req.setAttribute("svar", "Som vi brukar säga på Bibliotek Informatika: 'Ett tomt förslag är inget förslag.' / Bruno Nilsson, avdelning C");
+			// Ger feedback och skickar tillbaka anvï¿½ndaren till rï¿½tt vy.
+			req.setAttribute("svar", "Som vi brukar sÃ¤ga pÃ¥ Bibliotek Informatika: 'Ett tomt fÃ¶rslag Ã¤r inget fÃ¶rslag.' / Bruno Nilsson, avdelning C");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
 	
 		}
 		
-		// Vi försöker lägga till dokumentet.
+		// Vi fï¿½rsï¿½ker lï¿½gga till dokumentet.
 		if(laggTillForslag.laggTillForslag(personnummer, forslag)){
-			// Ger feedback och skickar tillbaka användaren till rätt vy.
-			req.setAttribute("svar", "Tack för visat intresse! Vi tittar på ditt förslag så fort vi kan. / Bruno Nilsson, avdelning C");
+			// Ger feedback och skickar tillbaka anvï¿½ndaren till rï¿½tt vy.
+			req.setAttribute("svar", "Tack fÃ¶r visat intresse! Vi tittar pÃ¥ ditt fÃ¶rslag sÃ¥ fort vi kan. / Bruno Nilsson, avdelning C");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
@@ -51,8 +51,8 @@ public class KontrollerLaggTillForslag extends HttpServlet {
 		}
 		// Om det inte lyckades.
 		else{
-			// Ger feedback och skickar tillbaka användaren till rätt vy.
-			req.setAttribute("svar", "Förslaget kunde inte läggas till. Kontakta administratören.");
+			// Ger feedback och skickar tillbaka anvï¿½ndaren till rï¿½tt vy.
+			req.setAttribute("svar", "FÃ¶rslaget kunde inte lÃ¤ggas till. Kontakta administratÃ¶ren.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;

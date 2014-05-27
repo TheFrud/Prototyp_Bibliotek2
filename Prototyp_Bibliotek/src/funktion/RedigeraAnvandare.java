@@ -31,9 +31,9 @@ public class RedigeraAnvandare{
 					String gatuadress, String stad, String postnummer, String telefon, String epost){
 				boolean edited = false;
 				try{
-					// Vi försöker ändra en persons uppgifter i databasen.
+					// Vi fï¿½rsï¿½ker ï¿½ndra en persons uppgifter i databasen.
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("UPDATE person SET Användarnamn = ?, Lösenord = ?, Förnamn = ?, Efternamn = ?, Gatuadress = ?, Stad = ?, Postnummer = ?, Telefon = ?, Epost = ? WHERE Personnummer = ?");
+					preparedStatement = connection.prepareStatement("UPDATE person SET AnvÃ¤ndarnamn = ?, LÃ¶senord = ?, FÃ¶rnamn = ?, Efternamn = ?, Gatuadress = ?, Stad = ?, Postnummer = ?, Telefon = ?, Epost = ? WHERE Personnummer = ?");
 					preparedStatement.setString(1, anvandarnamn);
 					preparedStatement.setString(2, losenord);
 					preparedStatement.setString(3, fornamn);
@@ -45,7 +45,7 @@ public class RedigeraAnvandare{
 					preparedStatement.setString(9, epost);
 					preparedStatement.setString(10, personnummer);
 					int numOfRowsEdited = preparedStatement.executeUpdate();
-					// Ändrades någon rad eller ej?
+					// ï¿½ndrades nï¿½gon rad eller ej?
 					if(numOfRowsEdited>0){
 						edited = true;
 					}

@@ -22,7 +22,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 		String personnummer = (String) session.getAttribute("sparatPersonnummer");
 		
-		// Vi hämtar in all data användaren skrivit in.
+		// Vi hï¿½mtar in all data anvï¿½ndaren skrivit in.
 		String isbn = req.getParameter("isbn");
 		String titel = req.getParameter("titel");
 		String upplaga = req.getParameter("upplaga");
@@ -40,38 +40,38 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 		LaggTillDokument laggTillDokument = new LaggTillDokument();
 		RequestDispatcher dispatcher;
 		
-		// Vi tittar om alla fält är ifyllda.
+		// Vi tittar om alla fï¿½lt ï¿½r ifyllda.
 		if(isbn.equals("") || titel.equals("") || upplaga.equals("") || forfattare.equals("") || forlag.equals("") || sidantal.equals("") || sprak.equals("")
 				|| bindningstyp.equals("") || nyckelord.equals("") || beskrivning.equals("")){
 			
-			req.setAttribute("svar", "Du måste fylla i samtliga fält!");
+			req.setAttribute("svar", "Du mÃ¥ste fylla i samtliga fÃ¤lt!");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
 		}
-		// Vi tittar om ISBN är 13 karaktärer långt.
+		// Vi tittar om ISBN ï¿½r 13 karaktï¿½rer lï¿½ngt.
 		if(isbn.length() != 13){
-			req.setAttribute("svar", "ISBN ska alltid vara 13 karaktärer. Det borde du veta som bibliotekarie.");
+			req.setAttribute("svar", "ISBN ska alltid vara 13 karaktÃ¤rer. Det borde du veta som bibliotekarie.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
 		}
-		// Vi tittar om ISBN är av typen heltal.
+		// Vi tittar om ISBN ï¿½r av typen heltal.
 		if(!arLong(isbn)){
-			req.setAttribute("svar", "ISBN ska innehålla endast siffror. Det borde du veta som bibliotekarie.");
+			req.setAttribute("svar", "ISBN ska endast innehÃ¥lla siffror. Det borde du veta som bibliotekarie.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
 		}
-		// Vi tittar om det skrivna sidantalet är ett heltal.
+		// Vi tittar om det skrivna sidantalet ï¿½r ett heltal.
 		if(!arHeltal(sidantal)){
-			req.setAttribute("svar", "Sidantalet måste vara av typen heltal.");
+			req.setAttribute("svar", "Sidantalet mÃ¥ste vara av typen heltal.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
 		}	
 		
-		// Vi tittar om dokumentet kunde läggas till.
+		// Vi tittar om dokumentet kunde lï¿½ggas till.
 		if(laggTillDokument.laggTillDokument(isbn, titel, upplaga, forfattare, forlag, sidantal, 
 				  sprak, bindningstyp, nyckelord, beskrivning, dokumenttyp, hylla, hyllplan) > 0){
 			req.setAttribute("svar", "Dokumentet har lagts till!");
@@ -81,9 +81,9 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 			
 
 		}
-		// Om dokumentet inte kunde läggas till.
+		// Om dokumentet inte kunde lï¿½ggas till.
 		else{
-			req.setAttribute("svar", "Dokumentet kunde inte läggas till.");
+			req.setAttribute("svar", "Dokumentet kunde inte lÃ¤ggas till.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
@@ -91,7 +91,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 
 		}
 	}
-	// Metod för att titta om en sträng kan omvandlas till ett heltal.
+	// Metod fï¿½r att titta om en strï¿½ng kan omvandlas till ett heltal.
 	public static boolean arHeltal(String s) {
 	    try { 
 	        Integer.parseInt(s); 
@@ -100,7 +100,7 @@ public class KontrollerLaggTillDokument extends HttpServlet {
 	    }
 	    return true;
 	}
-	// Metod för att titta om en sträng kan omvandlas till ett stort heltal.
+	// Metod fï¿½r att titta om en strï¿½ng kan omvandlas till ett stort heltal.
 	public static boolean arLong(String s) {
 	    try { 
 	        Long.parseLong(s); 

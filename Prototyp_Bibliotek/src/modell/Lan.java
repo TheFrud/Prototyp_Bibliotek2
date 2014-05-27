@@ -21,7 +21,7 @@ public class Lan {
 	}
 	
 	public String listaLan(){
-		return String.format("Låntagare: %25s Lånat dokument: %25s Tillbaka: %s", anvandare.getAnvandarnamn(), dokument.getTitel(), slutdatum.getTime());
+		return String.format("LÃ¥ntagare: %25s LÃ¥nat dokument: %25s Tillbaka: %s", anvandare.getAnvandarnamn(), dokument.getTitel(), slutdatum.getTime());
 	}
 	public String getLanID() {
 		return lanID;

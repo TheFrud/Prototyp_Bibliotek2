@@ -24,9 +24,9 @@ public class KontrollerRedigeraAnvandare extends HttpServlet {
 		Konsistenskontroll consistency = new Konsistenskontroll();
 		HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 
-		// Vi hämtar all data användaren har fyllt i formuläret.
+		// Vi hï¿½mtar all data anvï¿½ndaren har fyllt i formulï¿½ret.
 		String personnummer = (String) session.getAttribute("sparatPersonnummer");
-		String anvandarnamn = (String) req.getParameter("anvandarnamnEdit");
+		String anvandarnamn = (String) session.getAttribute("sparatAnvandarnamn");
 		String losenord = (String) req.getParameter("losenordEdit");
 		String fornamn = (String) req.getParameter("fornamnEdit");
 		String efternamn = (String) req.getParameter("efternamnEdit");
@@ -35,38 +35,25 @@ public class KontrollerRedigeraAnvandare extends HttpServlet {
 		String postnummer = (String) req.getParameter("postnummerEdit");
 		String telefon = (String) req.getParameter("telefonEdit");
 		String epost = (String) req.getParameter("epostEdit");
-		String a = (String) session.getAttribute("sparatAnvandarnamn");
 		RedigeraAnvandare redigeraAnvandare = new RedigeraAnvandare();
 		RequestDispatcher dispatcher;
-
-
 		
-		// Vi tittar om ifyllt lösenord eller användarnamn redan finns i databasen.
-		if(consistency.hittaAnvandarnamn(anvandarnamn) && anvandarnamn.equals(a) == false){
-			// Ger feedback och skickar tillbaka användaren till rätt vy.
-			req.setAttribute("svar", "Detta användarnamn finns redan i databasen. Välj ett annat.");
-			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
-			dispatcher.forward(req, resp);
-			return;
-	
-		}
-		
-		// Vi försöker uppdatera databasen med de nya användaruppgifterna.
+		// Vi fï¿½rsï¿½ker uppdatera databasen med de nya anvï¿½ndaruppgifterna.
 		if(redigeraAnvandare.redigeraAnvandare(personnummer, anvandarnamn, losenord, fornamn, efternamn, gatuadress, stad, postnummer, telefon, epost)){
 			// Uppdateringen lyckades.
-			// Vi läser in de nya uppgifterna i sessionen (inloggningen).
+			// Vi lï¿½ser in de nya uppgifterna i sessionen (inloggningen).
 			session.setAttribute("sparatAnvandarnamn", anvandarnamn);
 			session.setAttribute("sparatLosenord", losenord);
 			session.setAttribute("sparatFornamn", fornamn);
 			session.setAttribute("sparatEfternamn", efternamn);
 			session.setAttribute("sparadGatuadress", gatuadress);
-			session.setAttribute("sparadStad", gatuadress);
+			session.setAttribute("sparadStad", stad);
 			session.setAttribute("sparatPostnummer", postnummer);
 			session.setAttribute("sparadTelefon", telefon);
 			session.setAttribute("sparadEpost", epost);
 			fornamn = (String) session.getAttribute("sparatFornamn");
-			// Ger feedback och skickar tillbaka användaren till rätt vy.
-			req.setAttribute("svar", "Gratulerar " + fornamn + "! Dina användaruppgifter är nu uppdaterade.");
+			// Ger feedback och skickar tillbaka anvï¿½ndaren till rï¿½tt vy.
+			req.setAttribute("svar", "Gratulerar " + fornamn + "! Dina anvÃ¤ndaruppgifter Ã¤r nu uppdaterade.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;
@@ -76,8 +63,8 @@ public class KontrollerRedigeraAnvandare extends HttpServlet {
 		else{
 			// Uppdateringen lyckades inte.
 			fornamn = (String) session.getAttribute("sparatFornamn");
-			// Ger feedback och skickar tillbaka användaren till rätt vy.
-			req.setAttribute("svar", "Tyvärr " + fornamn + "! Dina användaruppgifter kunde inte uppdateras.");
+			// Ger feedback och skickar tillbaka anvï¿½ndaren till rï¿½tt vy.
+			req.setAttribute("svar", "TyvÃ¤rr " + fornamn + "! Dina anvÃ¤ndaruppgifter kunde inte uppdateras.");
 			dispatcher = req.getRequestDispatcher(hamtaAnvandare.hamtaRoll(personnummer));
 			dispatcher.forward(req, resp);
 			return;

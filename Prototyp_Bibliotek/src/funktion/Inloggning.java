@@ -41,9 +41,9 @@ public class Inloggning{
 	public boolean laggTillAnvandareFranSkolDB(String anvandarnamnIn, String losenordIn){
 		ArrayList<String> dataFranPersondatabas = new ArrayList<String>();
 		try{
-			// Hämtar data om personen från persondatabasen.
+			// Hï¿½mtar data om personen frï¿½n persondatabasen.
 			connection2 = getConnection2();
-			preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE Användarnamn = ? AND Lösenord = ?");
+			preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE AnvÃ¤ndarnamn = ? AND LÃ¶senord = ?");
 			preparedStatement.setString(1, anvandarnamnIn);
 			preparedStatement.setString(2, losenordIn);
 			resultSet = preparedStatement.executeQuery();
@@ -62,7 +62,7 @@ public class Inloggning{
 			dataFranPersondatabas.add(resultSet.getString(9));
 			dataFranPersondatabas.add(resultSet.getString(10));
 			
-			// Sparar datan från listan i strängar
+			// Sparar datan frï¿½n listan i strï¿½ngar
 			String personnummer = dataFranPersondatabas.get(0);
 			String anvandarnamn = dataFranPersondatabas.get(1);
 			String losenord = dataFranPersondatabas.get(2);
@@ -73,9 +73,9 @@ public class Inloggning{
 			String postnummer = dataFranPersondatabas.get(7);
 			String telefon = dataFranPersondatabas.get(8);
 			String epost = dataFranPersondatabas.get(9);
-			// Lägger in datan i bibliotek informatikas databas
+			// Lï¿½gger in datan i bibliotek informatikas databas
 			connection = getConnection();
-			preparedStatement = connection.prepareStatement("INSERT INTO person (Personnummer, Användarnamn, Lösenord, Förnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO person (Personnummer, AnvÃ¤ndarnamn, LÃ¶senord, FÃ¶rnamn, Efternamn, Gatuadress, Stad, Postnummer, Telefon, Epost) VALUES (?,?,?,?,?,?,?,?,?,?)");
 			preparedStatement.setString(1, personnummer);
 			preparedStatement.setString(2, anvandarnamn);
 			preparedStatement.setString(3, losenord);
@@ -87,7 +87,7 @@ public class Inloggning{
 			preparedStatement.setString(9, telefon);
 			preparedStatement.setString(10, epost);
 			int forandring = preparedStatement.executeUpdate();
-			// Om operationen lyckades så returnerar vi sant
+			// Om operationen lyckades sï¿½ returnerar vi sant
 			if(forandring > 0){
 				return true;
 			}

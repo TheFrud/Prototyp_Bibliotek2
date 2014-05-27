@@ -36,9 +36,9 @@ public class LaggTillForslag {
 		  public boolean laggTillForslag (String personnummer, String forslag) {
 			  int change = 0;
 			  try {
-				 // Vi lägger till ett nytt förslag i databasen.
+				 // Vi lï¿½gger till ett nytt fï¿½rslag i databasen.
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("INSERT INTO inköpsförslag VALUES (null, ?, ?)");
+				preparedStatement = connection.prepareStatement("INSERT INTO inkÃ¶psfÃ¶rslag VALUES (null, ?, ?)");
 				preparedStatement.setString(1, personnummer);
 				preparedStatement.setString(2, forslag);
 				change = preparedStatement.executeUpdate();

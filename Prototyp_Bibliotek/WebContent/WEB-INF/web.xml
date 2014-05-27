@@ -24,15 +24,5 @@
   <welcome-file-list>
     <welcome-file>litteratursokare.jsp</welcome-file>
   </welcome-file-list>
-  
-  <security-constraint>  
-  <web-resource-collection>  
-    <web-resource-name>My Hidden Pages</web-resource-name>  
-    <url-pattern>/hidden/lantagare.jsp</url-pattern>  
-  </web-resource-collection>  
-  <auth-constraint>  
-    <!-- empty to prevent anyone from accessing JSP files under "/hidden" -->  
-  </auth-constraint>  
-</security-constraint>  
 
 </web-app>

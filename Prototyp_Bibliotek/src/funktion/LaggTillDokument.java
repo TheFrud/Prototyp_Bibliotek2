@@ -40,9 +40,9 @@ public class LaggTillDokument{
 			  try {
 				  // Vi tittar om dokumentet redan existerar i Dokumenttabellen.
 				if(!konsistensKontroll.hittaDokument(isbn)){
-					// Om inte så försöker vi lägga till dokumentet.
+					// Om inte sï¿½ fï¿½rsï¿½ker vi lï¿½gga till dokumentet.
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("INSERT INTO dokument (ISBN, Titel, Upplaga, Författare, Förlag, Sidantal, Språk, Bindningstyp, Nyckelord, Beskrivning, Dokumenttyp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					preparedStatement = connection.prepareStatement("INSERT INTO dokument (ISBN, Titel, Upplaga, FÃ¶rfattare, FÃ¶rlag, Sidantal, SprÃ¥k, Bindningstyp, Nyckelord, Beskrivning, Dokumenttyp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 					preparedStatement.setString(1, isbn);
 					preparedStatement.setString(2, titel);
 					preparedStatement.setString(3, upplaga);
@@ -61,9 +61,9 @@ public class LaggTillDokument{
 					}
 				}
 				
-				// Vi försöker lägga till dokumentet i lagret.
+				// Vi fï¿½rsï¿½ker lï¿½gga till dokumentet i lagret.
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("INSERT INTO lager (Hylla, Hyllplan, Tillgänglig, ISBN, Tillagd) VALUES (? ,?, ?, ?, ?)");
+				preparedStatement = connection.prepareStatement("INSERT INTO lager (Hylla, Hyllplan, TillgÃ¤nglig, ISBN, Tillagd) VALUES (? ,?, ?, ?, ?)");
 				preparedStatement.setString(1, hylla);
 				preparedStatement.setString(2, hyllplan);
 				preparedStatement.setInt(3, 1);

@@ -33,9 +33,9 @@ public class HamtaAnvandare{
 			public ArrayList<String> hamtaAnvandarInfo(String anvandarnamn, String losenord){
 				ArrayList<String> list = new ArrayList<String>();
 				try{
-					// Hämta data ifrån Person-tabellen och spara i en lista
+					// HÃ¤mta data ifrÃ¥n person-tabellen och spara i en lista
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("SELECT * from person WHERE Användarnamn = ? AND Lösenord = ?");
+					preparedStatement = connection.prepareStatement("SELECT * from person WHERE AnvÃ¤ndarnamn = ? AND LÃ¶senord = ?");
 					preparedStatement.setString(1, anvandarnamn);
 					preparedStatement.setString(2, losenord);
 					resultSet = preparedStatement.executeQuery();
@@ -54,8 +54,8 @@ public class HamtaAnvandare{
 					}
 
 					
-					// Hämta data om personens roll och lägg i slutet av listan
-					preparedStatement = connection.prepareStatement("SELECT Roll FROM rollinnehav WHERE Personnummer IN (SELECT Personnummer FROM person WHERE Användarnamn = ?)");
+					// HÃ¤mta data om personens roll och lÃ¤gg i slutet av listan
+					preparedStatement = connection.prepareStatement("SELECT Roll FROM rollinnehav WHERE Personnummer IN (SELECT Personnummer FROM person WHERE AnvÃ¤ndarnamn = ?)");
 					preparedStatement.setString(1, anvandarnamn);
 					resultSet = preparedStatement.executeQuery();
 					if(resultSet.next()){
@@ -79,23 +79,23 @@ public class HamtaAnvandare{
 			public Anvandare hamtaAnvandare(String personnummer){
 				Anvandare anvandare = new Anvandare();
 				try{
-					// Hämta data ifrån Person-tabellen
+					// Hï¿½mta data ifrï¿½n Person-tabellen
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT * from person WHERE Personnummer = ?");
 					preparedStatement.setString(1, personnummer);
 					resultSet = preparedStatement.executeQuery();
 					
-					// Skapa ett nytt objekt av typen Anvandare med hjälp av datan.
+					// Skapa ett nytt objekt av typen Anvandare med hjï¿½lp av datan.
 					while(resultSet.next()){
 						anvandare = new Anvandare(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3) 
 								, resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)
 								,resultSet.getString(8), resultSet.getString(9), resultSet.getString(10));
 					}
-					// Hämta personens roll.
+					// Hï¿½mta personens roll.
 					preparedStatement = connection.prepareStatement("SELECT * FROM roll WHERE Roll IN (SELECT Roll FROM rollinnehav WHERE Personnummer = ?)");
 					preparedStatement.setString(1, personnummer);
 					resultSet = preparedStatement.executeQuery();
-					// Skapa ett nytt objekt av typen Roll med hjälp av datan.
+					// Skapa ett nytt objekt av typen Roll med hjï¿½lp av datan.
 					if(resultSet.next()){
 						anvandare.setRoll(new Roll(resultSet.getString(1), resultSet.getString(2)));
 					}
@@ -114,7 +114,7 @@ public class HamtaAnvandare{
 			public String hamtaRoll(String personnummer){
 				String roll = "";
 				try{
-					// Hämta data om en persons roll.
+					// Hï¿½mta data om en persons roll.
 					connection = getConnection();
 					preparedStatement = connection.prepareStatement("SELECT Roll from rollinnehav WHERE Personnummer = ?");
 					preparedStatement.setString(1, personnummer);
@@ -122,15 +122,15 @@ public class HamtaAnvandare{
 					while(resultSet.next()){
 						roll = resultSet.getString(1);
 					}
-					// Kolla vilken roll personen har. Beroende på svaret så skickar vi tillbaka 
-					// data till kontrollern om vilket gränssnitt som användaren borde skickas till.
-					if(roll.equals("Låntagare")){
+					// Kolla vilken roll personen har. Beroende pï¿½ svaret sï¿½ skickar vi tillbaka 
+					// data till kontrollern om vilket grï¿½nssnitt som anvï¿½ndaren borde skickas till.
+					if(roll.equals("Lï¿½ntagare")){
 						return "lantagare.jsp";
 					}
 					if(roll.equals("Bibliotekarie")){
 						return "bibliotekarie.jsp";
 					}
-					if(roll.equals("Administratör")){
+					if(roll.equals("Administratï¿½r")){
 						return "administrator.jsp";
 					}
 					return roll;

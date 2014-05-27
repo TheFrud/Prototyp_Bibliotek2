@@ -35,12 +35,12 @@ public class Konsistenskontroll{
 		    return ds.getConnection();
 		  }
 		  
-	    // Kollar om personen finns i persondatabasen på skolan. Notera att connection2 används.
+	    // Kollar om personen finns i persondatabasen pï¿½ skolan. Notera att connection2 anvï¿½nds.
 		public boolean hittaAnvandareOchRollSkolDB(String anvandarnamn, String losenord){
 			try{
-	    		// Returnera 1 om personen är både student och anställd
+	    		// Returnera 1 om personen ï¿½r bï¿½de student och anstï¿½lld
 				connection2 = getConnection2();
-	    		preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE Användarnamn = ? AND Lösenord = ? AND Personnummer IN (SELECT Personnummer FROM Rollinnehav)");
+	    		preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE AnvÃ¤ndarnamn = ? AND LÃ¶senord = ? AND Personnummer IN (SELECT Personnummer FROM Rollinnehav)");
 	    		preparedStatement.setString(1, anvandarnamn);
 	    		preparedStatement.setString(2, losenord);
 	    		resultSet = preparedStatement.executeQuery();
@@ -60,12 +60,12 @@ public class Konsistenskontroll{
 			      }
 	    }
 		
-		// Kollar om det lösenord personen skrivit in stämmer överrens med det redan lagrade i persondatabasen. Notera att connection2 används.
+		// Kollar om det lï¿½senord personen skrivit in stï¿½mmer ï¿½verrens med det redan lagrade i persondatabasen. Notera att connection2 anvï¿½nds.
 		public boolean hittaAnvandareSkolDB(String personnummer, String losenord){
 			boolean exists = false;
 			try{
 				connection2 = getConnection2();
-				preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE Lösenord = ? AND Personnummer = ?");
+				preparedStatement = connection2.prepareStatement("SELECT * FROM person WHERE LÃ¶senord = ? AND Personnummer = ?");
 				preparedStatement.setString(1, losenord);
 				preparedStatement.setString(2, personnummer);			
 				resultSet = preparedStatement.executeQuery();
@@ -89,13 +89,13 @@ public class Konsistenskontroll{
 		public boolean autentisera(String anvandarnamn, String losenord){
 	    	boolean memberExist = false;
 	    	try{
-	    		// Vi tittar om användarnamn och lösenord matchar det i databasen.
+	    		// Vi tittar om anvï¿½ndarnamn och lï¿½senord matchar det i databasen.
 	    		connection = getConnection();
-	    		preparedStatement = connection.prepareStatement("SELECT * FROM person WHERE Användarnamn = ? AND Lösenord = ?");
+	    		preparedStatement = connection.prepareStatement("SELECT * FROM person WHERE AnvÃ¤ndarnamn = ? AND LÃ¶senord = ?");
 	    		preparedStatement.setString(1, anvandarnamn);
 	    		preparedStatement.setString(2, losenord);
 	    		resultSet = preparedStatement.executeQuery();
-	    		// Om rader har returnerats så sätter vi variablen till sant.
+	    		// Om rader har returnerats sï¿½ sï¿½tter vi variablen till sant.
 	    		if(resultSet.next()){
 	    			memberExist = true;
 	    		}
@@ -114,12 +114,12 @@ public class Konsistenskontroll{
 		public boolean hittaLosenord(String losenord){
 			boolean exists = false;
 			try{
-				// Vi tittar om lösenordet finns i databasen.
+				// Vi tittar om lï¿½senordet finns i databasen.
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("SELECT * from person WHERE Lösenord = ?");
+				preparedStatement = connection.prepareStatement("SELECT * from person WHERE LÃ¶senord = ?");
 				preparedStatement.setString(1, losenord);
 				resultSet = preparedStatement.executeQuery();
-				// Om rader har returnerats så sätter vi variablen till sant.
+				// Om rader har returnerats sï¿½ sï¿½tter vi variablen till sant.
 				if(resultSet.next()){
 					exists = true;
 				}
@@ -138,12 +138,12 @@ public class Konsistenskontroll{
 		public boolean hittaAnvandarnamn(String anvandarnamn){
 			boolean exists = false;
 			try{
-				// Vi tittar om användarnamnet finns i databasen.
+				// Vi tittar om anvï¿½ndarnamnet finns i databasen.
 				connection = getConnection();
-				preparedStatement = connection.prepareStatement("SELECT * from person WHERE Användarnamn = ?");
+				preparedStatement = connection.prepareStatement("SELECT * from person WHERE AnvÃ¤ndarnamn = ?");
 				preparedStatement.setString(1, anvandarnamn);
 				resultSet = preparedStatement.executeQuery();
-				// Om rader har returnerats så sätter vi variablen till sant.
+				// Om rader har returnerats sï¿½ sï¿½tter vi variabeln till sant.
 				if(resultSet.next()){
 					exists = true;
 				}
@@ -167,7 +167,7 @@ public class Konsistenskontroll{
 				preparedStatement = connection.prepareStatement("SELECT * from dokument WHERE ISBN = ?");
 				preparedStatement.setString(1, isbn);
 				resultSet = preparedStatement.executeQuery();
-				// Om rader har returnerats så sätter vi variablen till sant.
+				// Om rader har returnerats sï¿½ sï¿½tter vi variablen till sant.
 				if(resultSet.next()){
 					exists = true;
 				}

@@ -43,11 +43,11 @@ public class HamtaForslag {
 				ArrayList<Forslag> list = new ArrayList<Forslag>();
 				HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 				try{
-					// Hämta alla förslag.
+					// Hï¿½mta alla fï¿½rslag.
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("SELECT * FROM inköpsförslag");
+					preparedStatement = connection.prepareStatement("SELECT * FROM inkÃ¶psfÃ¶rslag");
 					resultSet = preparedStatement.executeQuery();
-					// Skapa förslagobjekt och lägg i lista.
+					// Skapa fï¿½rslagobjekt och lï¿½gg i lista.
 					while(resultSet.next()){
 						list.add(new Forslag(hamtaAnvandare.hamtaAnvandare(resultSet.getString(2)), resultSet.getString(3)));
 					}

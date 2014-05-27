@@ -36,26 +36,26 @@ public class HamtaLan{
 				HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 				HamtaDokument hamtaDokument = new HamtaDokument();
 				try{
-					// Hämta alla lån med hjälp av personnummer.
+					// Hï¿½mta alla lï¿½n med hjï¿½lp av personnummer.
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("SELECT * FROM lån WHERE Person_Personnummer = ?");
+					preparedStatement = connection.prepareStatement("SELECT * FROM lÃ¥n WHERE Person_Personnummer = ?");
 					preparedStatement.setString(1, personnummer);
 					resultSet = preparedStatement.executeQuery();
 					while(resultSet.next()){
 						Calendar calendarStartdatum = new GregorianCalendar();
 						Calendar calendarSlutdatum = new GregorianCalendar();		
 						
-						// Hämta start och slut-datum och lägg in i strängar.
+						// Hï¿½mta start och slut-datum och lï¿½gg in i strï¿½ngar.
 						String date1String = resultSet.getString(2);
 						String date2String = resultSet.getString(3);
 
-						// Splitta upp strängarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
+						// Splitta upp strï¿½ngarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
 						String[] dateDelar = date1String.split("-");
 						calendarStartdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						dateDelar = date2String.split("-");
 						calendarSlutdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						
-						// Skapa lånobjekt och lägg i lista.
+						// Skapa lï¿½nobjekt och lï¿½gg i lista.
 						list.add(new Lan(resultSet.getString(1), calendarStartdatum , calendarSlutdatum , hamtaDokument.hamtaDokumentMedId(resultSet.getString(4)), hamtaAnvandare.hamtaAnvandare(personnummer)));
 					}
 					return list;
@@ -75,25 +75,25 @@ public class HamtaLan{
 				HamtaAnvandare hamtaAnvandare = new HamtaAnvandare();
 				HamtaDokument hamtaDokument = new HamtaDokument();
 				try{
-					// Hämta alla lån.
+					// Hï¿½mta alla lï¿½n.
 					connection = getConnection();
-					preparedStatement = connection.prepareStatement("SELECT * FROM lån");
+					preparedStatement = connection.prepareStatement("SELECT * FROM lÃ¥n");
 					resultSet = preparedStatement.executeQuery();
 					while(resultSet.next()){
 						Calendar calendarStartdatum = new GregorianCalendar();
 						Calendar calendarSlutdatum = new GregorianCalendar();		
 						
-						// Hämta start och slut-datum och lägg in i strängar.
+						// Hï¿½mta start och slut-datum och lï¿½gg in i strï¿½ngar.
 						String date1String = resultSet.getString(2);
 						String date2String = resultSet.getString(3);
 
-						// Splitta upp strängarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
+						// Splitta upp strï¿½ngarna med delimiter (-) . Exempel: 2013-04-05 > "2013" "04" "05"
 						String[] dateDelar = date1String.split("-");
 						calendarStartdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						dateDelar = date2String.split("-");
 						calendarSlutdatum.set(Integer.parseInt(dateDelar[0]), Integer.parseInt(dateDelar[1]), Integer.parseInt(dateDelar[2]));
 						
-						// Skapa lånobjekt och lägg i lista.
+						// Skapa lï¿½nobjekt och lï¿½gg i lista.
 						list.add(new Lan(resultSet.getString(1), calendarStartdatum , calendarSlutdatum , hamtaDokument.hamtaDokumentMedId(resultSet.getString(4)), hamtaAnvandare.hamtaAnvandare(resultSet.getString(5))));
 					}
 					return list;
